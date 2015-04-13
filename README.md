@@ -9,7 +9,7 @@ First install Node/NPM then do this:
 Then:
 
     npm install
-    grunt server
+    grunt build
 
 ### Developing
 
