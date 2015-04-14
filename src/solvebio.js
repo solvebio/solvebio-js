@@ -66,7 +66,7 @@ var buildURL = function(url, params) {
 
 SolveBio.prototype.init = function(userConfig) {
   this._config._accessToken = userConfig.accessToken;
-  config.DEBUG = userConfig.debug || config.DEBUG;
+  config.DEBUG = userConfig.debug;
 };
 
 //SolveBio.prototype.$http = function(url){

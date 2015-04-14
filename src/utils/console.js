@@ -1,13 +1,13 @@
 'use strict';
 
 var _ = require('./underscore');
-var CONFIG = require('../config.js');
+var config = require('../config.js');
 
 module.exports = {
   /** @type {function(...[*])} */
   log: function() {
-    if (CONFIG.DEBUG && !_.isUndefined(console) && console) {
-      var args = ['SolveBio[' + CONFIG.VERSION + '] log:'].concat(_.toArray(arguments));
+    if (config.DEBUG && !_.isUndefined(console) && console) {
+      var args = ['SolveBio[' + config.VERSION + '] log:'].concat(_.toArray(arguments));
       try {
         console.log.apply(console, args);
       } catch(err) {
@@ -19,8 +19,8 @@ module.exports = {
   },
   /** @type {function(...[*])} */
   error: function() {
-    if (CONFIG.DEBUG && !_.isUndefined(console) && console) {
-      var args = ['SolveBio[' + CONFIG.VERSION + '] error:'].concat(_.toArray(arguments));
+    if (config.DEBUG && !_.isUndefined(console) && console) {
+      var args = ['SolveBio[' + config.VERSION + '] error:'].concat(_.toArray(arguments));
       try {
         console.error.apply(console, args);
       } catch(err) {
@@ -33,7 +33,7 @@ module.exports = {
   /** @type {function(...[*])} */
   warn: function() {
     if (!_.isUndefined(console) && console) {
-      var args = ['SolveBio[' + CONFIG.VERSION + '] warning:'].concat(_.toArray(arguments));
+      var args = ['SolveBio[' + config.VERSION + '] warning:'].concat(_.toArray(arguments));
       try {
         console.warn.apply(console, args);
       } catch(err) {

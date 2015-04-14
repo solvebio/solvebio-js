@@ -4,6 +4,6 @@ coverage/
 npm-debug.log
 bower_components
 tmp
-dev_dist
+dev_dist/
 build.config.local.js
 .idea/*
