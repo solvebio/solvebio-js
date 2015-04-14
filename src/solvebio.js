@@ -67,6 +67,7 @@ var buildURL = function(url, params) {
 
 SolveBio.prototype.init = function(userConfig) {
   this._config._accessToken = userConfig.accessToken;
+  this._config.promises = Promise && !!userConfig.promises;
   config.DEBUG = !!userConfig.debug;
 };
 
@@ -188,7 +189,7 @@ SolveBio.prototype._rest = function(method, path, data, success, error) {
 
 var restShortcut = function(method) {
   SolveBio.prototype['_' + method.toLowerCase()] = function() {
-    if(Promise) {
+    if(Promise && this._config.promises) {
       // A Promise library has been found
       return SolveBio.prototype.$http.apply(this, [arguments[0]])[method.toLowerCase()].apply(this, [].slice.call(arguments, 1));
     }
