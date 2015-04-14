@@ -19,7 +19,7 @@ module.exports = {
   },
   /** @type {function(...[*])} */
   error: function() {
-    if (config.DEBUG && !_.isUndefined(console) && console) {
+    if (!_.isUndefined(console) && console) {
       var args = ['SolveBio[' + config.VERSION + '] error:'].concat(_.toArray(arguments));
       try {
         console.error.apply(console, args);
@@ -32,7 +32,7 @@ module.exports = {
   },
   /** @type {function(...[*])} */
   warn: function() {
-    if (!_.isUndefined(console) && console) {
+    if (config.DEBUG && !_.isUndefined(console) && console) {
       var args = ['SolveBio[' + config.VERSION + '] warning:'].concat(_.toArray(arguments));
       try {
         console.warn.apply(console, args);

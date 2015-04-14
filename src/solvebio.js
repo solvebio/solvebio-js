@@ -42,17 +42,14 @@ var solveBioDepositoryManager = require('./resource-managers/depository-manager'
 var SolveBio = function() {
   this.VERSION = config.VERSION;
   this._config = config;
-  this.depository = function() {
-    return new solveBioDepositoryManager(this);
+  this.depository = function(id) {
+    return new solveBioDepositoryManager(this, id);
   };
-  this.depositoryVersion = function() {
-    return new solveBioDepositoryVersionManager(this);
+  this.depositoryVersion = function(id) {
+    return new solveBioDepositoryVersionManager(this, id);
   };
-  this.depositoryVersion.all = function() {
-    return;
-  };
-  this.dataset = function() {
-    return new solveBioDatasetManager(this);
+  this.dataset = function(id) {
+    return new solveBioDatasetManager(this, id);
   };
 
   return this;

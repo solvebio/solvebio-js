@@ -1,28 +1,39 @@
 'use strict';
 
+var console = require('../utils/console');
 var solveBioResourceManager = require('./solvebio-resource-manager');
-var solveBioDepositoryVersion = require('../resources/depository-version');
 
 /**
  * SolveBio DepositoryVersion Manager Object
  * @constructor
  */
 
-var solveBioDepositoryVersionManager = function(solveBio) {
+var solveBioDepositoryVersionManager = function(solveBio, id) {
   var path = 'depository_versions';
 
   // Call the parent constructor, making sure (using Function#call)
   // that "this" is set correctly during the call
-  solveBioResourceManager.call(this, solveBio, path);
+  solveBioResourceManager.call(this, solveBio, path, id);
 };
 
 solveBioDepositoryVersionManager.prototype = Object.create(solveBioResourceManager.prototype);
 
-/** @type {function(...[*])} */
-solveBioDepositoryVersionManager.prototype.retrieve = function(id) {
-  var depositoryVersion = new solveBioDepositoryVersion(this._solveBio, this._path, id);
-  depositoryVersion._retrieve();
-  return depositoryVersion;
+solveBioDepositoryVersionManager.prototype.datasets = function() {
+  if(this._id) {
+    return this._solveBio._get(this._path + '/' + this._id + '/datasets', {});
+  }
+  else {
+    console.error('You need to specify an id.');
+  }
+};
+
+solveBioDepositoryVersionManager.prototype.changelog = function() {
+  if(this._id) {
+    return this._solveBio._get(this._path + '/' + this._id + '/changelog', {});
+  }
+  else {
+    console.error('You need to specify an id.');
+  }
 };
 
 module.exports = solveBioDepositoryVersionManager;
