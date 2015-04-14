@@ -17,8 +17,8 @@ var solveBioDataset = function(solveBio, path, id) {
 
 solveBioDataset.prototype = Object.create(solveBioResource.prototype);
 
-solveBioDataset.prototype.query = function(success, error) {
-  return this._solveBio._post(this._path + '/data', {}, success, error);
+solveBioDataset.prototype.query = function() {
+  return this._solveBio._post(this._path + '/data', {});
 };
 
 module.exports = solveBioDataset;

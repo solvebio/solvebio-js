@@ -17,8 +17,8 @@ var solveBioDepositoryVersion = function(solveBio, path, id) {
 
 solveBioDepositoryVersion.prototype = Object.create(solveBioResource.prototype);
 
-solveBioDepositoryVersion.prototype.datasets = function(success, error) {
-  return this._solveBio._get(this._path + '/datasets', {}, success, error);
+solveBioDepositoryVersion.prototype.datasets = function() {
+  return this._solveBio._get(this._path + '/datasets', {});
 };
 
 module.exports = solveBioDepositoryVersion;

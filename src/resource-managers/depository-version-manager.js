@@ -19,9 +19,9 @@ var solveBioDepositoryVersionManager = function(solveBio) {
 solveBioDepositoryVersionManager.prototype = Object.create(solveBioResourceManager.prototype);
 
 /** @type {function(...[*])} */
-solveBioDepositoryVersionManager.prototype.retrieve = function(id, success, error) {
+solveBioDepositoryVersionManager.prototype.retrieve = function(id) {
   var depositoryVersion = new solveBioDepositoryVersion(this._solveBio, this._path, id);
-  depositoryVersion._retrieve(success, error);
+  depositoryVersion._retrieve();
   return depositoryVersion;
 };
 

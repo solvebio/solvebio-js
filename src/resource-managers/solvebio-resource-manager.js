@@ -13,34 +13,38 @@ var solveBioResourceManager = function(solveBio, path) {
 };
 
 /** @type {function(...[*])} */
-solveBioResourceManager.prototype.all = function(success, error) {
+solveBioResourceManager.prototype.all = function() {
   var self = this;
-  return self._solveBio._get(self._path, {}, function(data) {
-    self._nextURL = data.links.next;
-    self._prevURL = data.links.prev;
-    success(data);
-  }, error);
+
+  return this._solveBio._get(self._path, {})
+    .then(function(data) {
+      self._nextURL = data.links.next;
+      self._prevURL = data.links.prev;
+      return data;
+    });
 };
 
 /** @type {function(...[*])} */
-solveBioResourceManager.prototype.next = function(success, error) {
+solveBioResourceManager.prototype.next = function() {
   if(this.hasNext()) {
-    return this._solveBio._get(this._nextURL, {}, function(data) {
-      this._nextURL = data.links.next;
-      this._prevURL = data.links.prev;
-      success(data);
-    }, error);
+    return this._solveBio._get(this._nextURL, {})
+      .then(function(data) {
+        self._nextURL = data.links.next;
+        self._prevURL = data.links.prev;
+        return data;
+      });
   }
 };
 
 /** @type {function(...[*])} */
-solveBioResourceManager.prototype.prev = function(success, error) {
+solveBioResourceManager.prototype.prev = function() {
   if(this.hasPrev()) {
-    return this._solveBio._get(this._prevURL, {}, function(data) {
-      this._nextURL = data.links.next;
-      this._prevURL = data.links.prev;
-      success(data);
-    }, error);
+    return this._solveBio._get(this._prevURL, {})
+      .then(function(data) {
+        self._nextURL = data.links.next;
+        self._prevURL = data.links.prev;
+        return data;
+      });
   }
 };
 

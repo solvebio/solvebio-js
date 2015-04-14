@@ -11,7 +11,9 @@
     "type": "git",
     "url": "git@github.com:solvebio/solvebio-js.git"
   },
-  "dependencies": {},
+  "dependencies": {
+    "bluebird": "^2.9.24"
+  },
   "devDependencies": {
     "browserify": "^9.0.8",
     "bundle-collapser": "^1.1.4",

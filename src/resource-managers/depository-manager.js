@@ -19,9 +19,9 @@ var solveBioDepositoryManager = function(solveBio) {
 solveBioDepositoryManager.prototype = Object.create(solveBioResourceManager.prototype);
 
 /** @type {function(...[*])} */
-solveBioDepositoryManager.prototype.retrieve = function(id, success, error) {
+solveBioDepositoryManager.prototype.retrieve = function(id) {
   var depository = new solveBioDepository(this._solveBio, this._path, id);
-  depository._retrieve(success, error);
+  depository._retrieve();
   return depository;
 };
 

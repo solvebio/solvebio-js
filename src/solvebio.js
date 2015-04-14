@@ -28,7 +28,7 @@
 var console = require('./utils/console');
 var config = require('./config');
 var _ = require('./utils/underscore');
-var Promise = require('./utils/Promise');
+var Promise = require('bluebird');
 
 var solveBioDepositoryManager = require('./resource-managers/depository-manager'),
   solveBioDepositoryVersionManager = require('./resource-managers/depository-version-manager'),
@@ -42,9 +42,18 @@ var solveBioDepositoryManager = require('./resource-managers/depository-manager'
 var SolveBio = function() {
   this.VERSION = config.VERSION;
   this._config = config;
-  this.depository = new solveBioDepositoryManager(this);
-  this.depositoryVersion = new solveBioDepositoryVersionManager(this);
-  this.dataset = new solveBioDatasetManager(this);
+  this.depository = function() {
+    return new solveBioDepositoryManager(this);
+  };
+  this.depositoryVersion = function() {
+    return new solveBioDepositoryVersionManager(this);
+  };
+  this.depositoryVersion.all = function() {
+    return;
+  };
+  this.dataset = function() {
+    return new solveBioDatasetManager(this);
+  };
 
   return this;
 };
@@ -61,13 +70,8 @@ var serialize = function(obj) {
   return str.join('&');
 };
 
-var buildURL = function(url, params) {
-  return url + (url.indexOf('?') > 0 ? '&' : '?') + serialize(params);
-};
-
 SolveBio.prototype.init = function(userConfig) {
   this._config._accessToken = userConfig.accessToken;
-  this._config.promises = Promise && !!userConfig.promises;
   config.DEBUG = !!userConfig.debug;
 };
 
@@ -76,43 +80,48 @@ SolveBio.prototype.$http = function(path){
   var core = {
     // AJAX call
     ajax: function(method, url, data, args) {
+      if(self._config._accessToken) {
+        // Returns a promise
+        return new Promise(function(resolve, reject) {
 
-      // Returns a promise
-      return new Promise(function(resolve, reject) {
+          // Instantiate XMLHttpRequest
+          var xhr = new XMLHttpRequest();
+          url = '' + self._config.apiHost + '/' + url.replace(/^\/?/, '');
 
-        // Instantiate XMLHttpRequest
-        var xhr = new XMLHttpRequest();
-        url = '' + self._config.apiHost + '/' + url.replace(/^\/?/, '');
+          if(data && (method === 'POST' || method === 'PUT')) {
+            url += '?';
+            _.forEach(args, function(key) {
+              if (args.hasOwnProperty(key)) {
+                url += encodeURIComponent(key) + '=' + encodeURIComponent(args[key]) + '&';
+              }
+            });
+          }
 
-        if(data && (method === 'POST' || method === 'PUT')) {
-          url += '?';
-          _.forEach(args, function(key) {
-            if (args.hasOwnProperty(key)) {
-              url += encodeURIComponent(key) + '=' + encodeURIComponent(args[key]) + '&';
+          console.log('Sending ' + method + ' request to ' + url);
+          xhr.open(method, url, true);
+          xhr.setRequestHeader('Content-type', 'application/json');
+          xhr.setRequestHeader('Authorization', 'Bearer ' + self._config._accessToken);
+          xhr.send(data);
+
+          xhr.onload = function () {
+            if(this.status === 200){
+              // Use 'resolve' if this.status equals 200
+              resolve(JSON.parse(this.response));
             }
-          });
-        }
+            else{
+              // Use 'reject' if this.status is different than 200
+              reject(this.statusText);
+            }
+          };
 
-        xhr.open(method, url, true);
-        xhr.setRequestHeader('Content-type', 'application/json');
-        xhr.setRequestHeader('Authorization', 'Bearer ' + self._config._accessToken);
-        xhr.send(data);
-
-        xhr.onload = function () {
-          if(this.status === 200){
-            // Use 'resolve' if this.status equals 200
-            resolve(this.response);
-          }
-          else{
-            // Use 'reject' if this.status is different than 200
+          xhr.onerror = function () {
             reject(this.statusText);
-          }
-        };
-
-        xhr.onerror = function () {
-          reject(this.statusText);
-        };
-      });
+          };
+        });
+      }
+      else {
+        console.error('You must initialize the SolveBio instance with a valid Token: SolveBio.init(/* configObject */)');
+      }
     }
   };
 
@@ -133,69 +142,67 @@ SolveBio.prototype.$http = function(path){
   };
 };
 
-SolveBio.prototype._rest = function(method, path, data, success, error) {
-  if(this._config._accessToken) {
-    method = method.toUpperCase();
-    var url = '' + this._config.apiHost + '/' + path.replace(/^\/?/, '');
-    data = data || {};
-    success = success || function () {
-    };
-    error = error || function () {
-    };
+//var buildURL = function(url, params) {
+//  return url + (url.indexOf('?') > 0 ? '&' : '?') + serialize(params);
+//};
 
-    if (method === 'GET' || method === 'HEAD') {
-      // serialize the data into the query parameters
-      url = buildURL(url, data);
-      data = null;
-    } else {
-      // JSONify the data into the request body
-      data = JSON.stringify(data, null, 4);
-    }
-
-    // IE6 and below are not supported
-    var xhr = new XMLHttpRequest();
-
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4 && xhr.status !== 200) {
-        try {
-          error(JSON.parse(xhr.responseText));
-        } catch (_error) {
-          error(xhr.responseText);
-        }
-      }
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        try {
-          success(JSON.parse(xhr.responseText));
-        } catch (_error) {
-          error(xhr.responseText);
-        }
-      }
-    };
-
-    console.log('Sending ' + method + ' request to ' + url);
-    xhr.open(method, url, true);
-    xhr.setRequestHeader('Content-type', 'application/json');
-    xhr.setRequestHeader('Authorization', 'Bearer ' + this._config._accessToken);
-    xhr.send(data);
-
-    return xhr;
-  }
-  else {
-    console.error('You must initialize the SolveBio instance with a valid Token: SolveBio.init(/* configObject */)');
-  }
-};
+//SolveBio.prototype._rest = function(method, path, data, success, error) {
+//  if(this._config._accessToken) {
+//    method = method.toUpperCase();
+//    var url = '' + this._config.apiHost + '/' + path.replace(/^\/?/, '');
+//    data = data || {};
+//    success = success || function () {
+//    };
+//    error = error || function () {
+//    };
+//
+//    if (method === 'GET' || method === 'HEAD') {
+//      // serialize the data into the query parameters
+//      url = buildURL(url, data);
+//      data = null;
+//    } else {
+//      // JSONify the data into the request body
+//      data = JSON.stringify(data, null, 4);
+//    }
+//
+//    // IE6 and below are not supported
+//    var xhr = new XMLHttpRequest();
+//
+//    xhr.onreadystatechange = function () {
+//      if (xhr.readyState === 4 && xhr.status !== 200) {
+//        try {
+//          error(JSON.parse(xhr.responseText));
+//        } catch (_error) {
+//          error(xhr.responseText);
+//        }
+//      }
+//      if (xhr.readyState === 4 && xhr.status === 200) {
+//        try {
+//          success(JSON.parse(xhr.responseText));
+//        } catch (_error) {
+//          error(xhr.responseText);
+//        }
+//      }
+//    };
+//
+//    console.log('Sending ' + method + ' request to ' + url);
+//    xhr.open(method, url, true);
+//    xhr.setRequestHeader('Content-type', 'application/json');
+//    xhr.setRequestHeader('Authorization', 'Bearer ' + this._config._accessToken);
+//    xhr.send(data);
+//
+//    return xhr;
+//  }
+//  else {
+//    console.error('You must initialize the SolveBio instance with a valid Token: SolveBio.init(/* configObject */)');
+//  }
+//};
 
 /* REST shortcut methods */
 
 var restShortcut = function(method) {
   SolveBio.prototype['_' + method.toLowerCase()] = function() {
-    if(Promise && this._config.promises) {
-      // A Promise library has been found
-      return SolveBio.prototype.$http.apply(this, [arguments[0]])[method.toLowerCase()].apply(this, [].slice.call(arguments, 1));
-    }
-    else {
-      return SolveBio.prototype._rest.apply(this, [method].concat([].slice.call(arguments)));
-    }
+    return SolveBio.prototype.$http.apply(this, [arguments[0]])[method.toLowerCase()].apply(this, [].slice.call(arguments, 1));
   };
 };
 

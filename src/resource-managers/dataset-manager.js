@@ -19,9 +19,9 @@ var solveBioDatasetManager = function(solveBio) {
 solveBioDatasetManager.prototype = Object.create(solveBioResourceManager.prototype);
 
 /** @type {function(...[*])} */
-solveBioDatasetManager.prototype.retrieve = function(id, success, error) {
+solveBioDatasetManager.prototype.retrieve = function(id) {
   var dataset = new solveBioDataset(this._solveBio, this._path, id);
-  dataset._retrieve(success, error);
+  dataset._retrieve();
   return dataset;
 };
 

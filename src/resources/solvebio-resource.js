@@ -1,7 +1,5 @@
 'use strict';
 
-var _ = require('../utils/underscore');
-
 /**
  * SolveBio Resource Object
  * @constructor
@@ -14,14 +12,8 @@ var solveBioResource = function(solveBio, path) {
 };
 
 /** @type {function(...[*])} */
-solveBioResource.prototype._retrieve = function(success, error) {
-  var self = this;
-  var _success = function(data) {
-    _.assign(self, data);
-    success(data);
-  };
-
-  return this._solveBio._get(this._path, {}, _success, error);
+solveBioResource.prototype._retrieve = function() {
+  return this._solveBio._get(this._path, {});
 };
 
 module.exports = solveBioResource;
