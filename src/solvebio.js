@@ -28,6 +28,7 @@
 var console = require('./utils/console');
 var config = require('./config');
 var _ = require('./utils/underscore');
+var Promise = require('./utils/Promise');
 
 var solveBioDepositoryManager = require('./resource-managers/depository-manager'),
   solveBioDepositoryVersionManager = require('./resource-managers/depository-version-manager'),
@@ -69,64 +70,67 @@ SolveBio.prototype.init = function(userConfig) {
   config.DEBUG = !!userConfig.debug;
 };
 
-//SolveBio.prototype.$http = function(url){
-//
-//  var core = {
-//    // AJAX call
-//    ajax : function(method, url, args) {
-//
-//      // Returns a promise
-//      return new Promise(function(resolve, reject) {
-//
-//        // Instantiate XMLHttpRequest
-//        var client = new XMLHttpRequest();
-//        var uri = url;
-//
-//        if(args && (method === 'POST' || method === 'PUT')) {
-//          url += '?';
-//          for (key in args) {
-//            if (args.hasOwnProperty(key)) {
-//              uri += encodeURIComponent(key) + '=' + encodeURIComponent(args[key]) + '&';
-//            }
-//          }
-//        }
-//
-//        client.open(method, url);
-//
-//        client.onload = function () {
-//          if(this.status == 200){
-//            // Use 'resolve' if this.status equals 200
-//            resolve(this.response);
-//          }
-//          else{
-//            // Use 'reject' if this.status is different than 200
-//            reject(this.statusText);
-//          }
-//        };
-//
-//        client.onerror = function () {
-//          reject(this.statusText);
-//        }
-//      })
-//    }
-//  };
-//
-//  // Pattern adapter
-//  return {
-//    'get' : function(args) {
-//      return core.ajax('GET', url, args);
-//    },
-//    'post' : function(args) {
-//      return core.ajax('POST', url, args);
-//    },
-//    'put' : function(args) {
-//      return core.ajax('PUT', url, args);
-//    },
-//    'delete' : function(args) {
-//      return core.ajax('DELETE', url, args);
-//    }
-//  };
-//};
+SolveBio.prototype.$http = function(path){
+  var self = this;
+  var core = {
+    // AJAX call
+    ajax: function(method, url, data, args) {
+
+      // Returns a promise
+      return new Promise(function(resolve, reject) {
+
+        // Instantiate XMLHttpRequest
+        var xhr = new XMLHttpRequest();
+        url = '' + self._config.apiHost + '/' + url.replace(/^\/?/, '');
+
+        if(data && (method === 'POST' || method === 'PUT')) {
+          url += '?';
+          _.forEach(args, function(key) {
+            if (args.hasOwnProperty(key)) {
+              url += encodeURIComponent(key) + '=' + encodeURIComponent(args[key]) + '&';
+            }
+          });
+        }
+
+        xhr.open(method, url, true);
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.setRequestHeader('Authorization', 'Bearer ' + self._config._accessToken);
+        xhr.send(data);
+
+        xhr.onload = function () {
+          if(this.status === 200){
+            // Use 'resolve' if this.status equals 200
+            resolve(this.response);
+          }
+          else{
+            // Use 'reject' if this.status is different than 200
+            reject(this.statusText);
+          }
+        };
+
+        xhr.onerror = function () {
+          reject(this.statusText);
+        };
+      });
+    }
+  };
+
+  // Pattern adapter
+  return {
+    get: function(data, args) {
+      return core.ajax('GET', path, data, args);
+    },
+    post: function(data, args) {
+      return core.ajax('POST', path, data, args);
+    },
+    put: function(data, args) {
+      return core.ajax('PUT', path, data, args);
+    },
+    delete: function(data, args) {
+      return core.ajax('DELETE', path, data, args);
+    }
+  };
+};
 
 SolveBio.prototype._rest = function(method, path, data, success, error) {
   if(this._config._accessToken) {
@@ -184,7 +188,13 @@ SolveBio.prototype._rest = function(method, path, data, success, error) {
 
 var restShortcut = function(method) {
   SolveBio.prototype['_' + method.toLowerCase()] = function() {
-    return SolveBio.prototype._rest.apply(this, [method].concat([].slice.call(arguments)));
+    if(Promise) {
+      // A Promise library has been found
+      return SolveBio.prototype.$http.apply(this, [arguments[0]])[method.toLowerCase()].apply(this, [].slice.call(arguments, 1));
+    }
+    else {
+      return SolveBio.prototype._rest.apply(this, [method].concat([].slice.call(arguments)));
+    }
   };
 };
 

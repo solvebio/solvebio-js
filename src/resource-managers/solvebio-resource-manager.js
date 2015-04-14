@@ -1,5 +1,7 @@
 'use strict';
 
+//var Q = require('../utils/promise');
+
 /**
  * SolveBio Resource Manager Object
  * @constructor
@@ -12,9 +14,10 @@ var solveBioResourceManager = function(solveBio, path) {
 
 /** @type {function(...[*])} */
 solveBioResourceManager.prototype.all = function(success, error) {
-  return this._solveBio._get(this._path, {}, function(data) {
-    this._nextURL = data.links.next;
-    this._prevURL = data.links.prev;
+  var self = this;
+  return self._solveBio._get(self._path, {}, function(data) {
+    self._nextURL = data.links.next;
+    self._prevURL = data.links.prev;
     success(data);
   }, error);
 };
