@@ -27,7 +27,7 @@ solveBioResourceManager.prototype.retrieve = function() {
 solveBioResourceManager.prototype.all = function() {
   var self = this;
 
-  return this._solveBio._get(this._path, {})
+  return this._solveBio.get(this._path, {})
     .then(function(data) {
       self._nextURL = data.links.next;
       self._prevURL = data.links.prev;
@@ -38,7 +38,7 @@ solveBioResourceManager.prototype.all = function() {
 /** @type {function(...[*])} */
 solveBioResourceManager.prototype.next = function() {
   if(this.hasNext()) {
-    return this._solveBio._get(this._nextURL, {})
+    return this._solveBio.get(this._nextURL, {})
       .then(function(data) {
         self._nextURL = data.links.next;
         self._prevURL = data.links.prev;
@@ -50,7 +50,7 @@ solveBioResourceManager.prototype.next = function() {
 /** @type {function(...[*])} */
 solveBioResourceManager.prototype.prev = function() {
   if(this.hasPrev()) {
-    return this._solveBio._get(this._prevURL, {})
+    return this._solveBio.get(this._prevURL, {})
       .then(function(data) {
         self._nextURL = data.links.next;
         self._prevURL = data.links.prev;

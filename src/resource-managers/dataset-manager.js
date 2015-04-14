@@ -17,9 +17,13 @@ var solveBioDatasetManager = function(solveBio, id) {
 
 solveBioDatasetManager.prototype = Object.create(solveBioResourceManager.prototype);
 
-solveBioDatasetManager.prototype.query = function() {
+solveBioDatasetManager.prototype.query = function(options) {
   if(this._id) {
-    return this._solveBio._get(this._path + '/' + this._id + '/data', {});
+    return this._solveBio.post(this._path + '/' + this._id + '/data', {
+      genome_build: options.genome_build,
+      filters: options.filters,
+      fields: options.fields
+    });
   }
   else {
     console.error('You need to specify an id.');
@@ -28,7 +32,7 @@ solveBioDatasetManager.prototype.query = function() {
 
 solveBioDatasetManager.prototype.fields = function() {
   if(this._id) {
-    return this._solveBio._get(this._path + '/' + this._id + '/fields', {});
+    return this._solveBio.get(this._path + '/' + this._id + '/fields', {});
   }
   else {
     console.error('You need to specify an id.');

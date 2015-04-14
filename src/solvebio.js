@@ -72,6 +72,10 @@ SolveBio.prototype.init = function(userConfig) {
   config.DEBUG = !!userConfig.debug;
 };
 
+var buildURL = function(url, params) {
+  return url + (url.indexOf('?') > 0 ? '&' : '?') + serialize(params);
+};
+
 SolveBio.prototype.$http = function(path){
   var self = this;
   var core = {
@@ -85,13 +89,14 @@ SolveBio.prototype.$http = function(path){
           var xhr = new XMLHttpRequest();
           url = '' + self._config.apiHost + '/' + url.replace(/^\/?/, '');
 
-          if(data && (method === 'POST' || method === 'PUT')) {
-            url += '?';
-            _.forEach(args, function(key) {
-              if (args.hasOwnProperty(key)) {
-                url += encodeURIComponent(key) + '=' + encodeURIComponent(args[key]) + '&';
-              }
-            });
+          if (method === 'GET') {
+            // serialize the data into the query parameters
+            url = buildURL(url, data);
+            data = null;
+          }
+          else {
+            // JSONify the data into the request body
+            data = JSON.stringify(data, null, 4);
           }
 
           console.log('Sending ' + method + ' request to ' + url);
@@ -107,7 +112,7 @@ SolveBio.prototype.$http = function(path){
             }
             else{
               // Use 'reject' if this.status is different than 200
-              reject(this.statusText);
+              reject(JSON.parse(this.response));
             }
           };
 
@@ -138,10 +143,6 @@ SolveBio.prototype.$http = function(path){
     }
   };
 };
-
-//var buildURL = function(url, params) {
-//  return url + (url.indexOf('?') > 0 ? '&' : '?') + serialize(params);
-//};
 
 //SolveBio.prototype._rest = function(method, path, data, success, error) {
 //  if(this._config._accessToken) {
@@ -198,7 +199,7 @@ SolveBio.prototype.$http = function(path){
 /* REST shortcut methods */
 
 var restShortcut = function(method) {
-  SolveBio.prototype['_' + method.toLowerCase()] = function() {
+  SolveBio.prototype[method.toLowerCase()] = function() {
     return SolveBio.prototype.$http.apply(this, [arguments[0]])[method.toLowerCase()].apply(this, [].slice.call(arguments, 1));
   };
 };

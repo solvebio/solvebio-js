@@ -20,7 +20,7 @@ solveBioDepositoryVersionManager.prototype = Object.create(solveBioResourceManag
 
 solveBioDepositoryVersionManager.prototype.datasets = function() {
   if(this._id) {
-    return this._solveBio._get(this._path + '/' + this._id + '/datasets', {});
+    return this._solveBio.get(this._path + '/' + this._id + '/datasets', {});
   }
   else {
     console.error('You need to specify an id.');
@@ -29,7 +29,7 @@ solveBioDepositoryVersionManager.prototype.datasets = function() {
 
 solveBioDepositoryVersionManager.prototype.changelog = function() {
   if(this._id) {
-    return this._solveBio._get(this._path + '/' + this._id + '/changelog', {});
+    return this._solveBio.get(this._path + '/' + this._id + '/changelog', {});
   }
   else {
     console.error('You need to specify an id.');
