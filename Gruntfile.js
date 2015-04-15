@@ -6,6 +6,7 @@ var minifyify = require('minifyify'),
 module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-eslint');
+  grunt.loadNpmTasks('grunt-bump');
 
   var taskConfig = {
     pkg: grunt.file.readJSON('package.json'),
@@ -61,6 +62,24 @@ module.exports = function(grunt) {
         configFile: '.eslintrc'
       },
       target: ['src/**/*.js']
+    },
+    bump: {
+      options: {
+        files: ['package.json', 'src/config.js'],
+        updateConfigs: [],
+        commit: true,
+        commitMessage: 'Released version: %VERSION%',
+        commitFiles: ['-a'],
+        createTag: true,
+        tagName: 'v%VERSION%',
+        tagMessage: 'Version %VERSION%',
+        push: true,
+        pushTo: 'origin',
+        gitDescribeOptions: '--tags --always --abbrev=1 --dirty=-d',
+        globalReplace: false,
+        prereleaseName: false,
+        regExp: false
+      }
     }
   };
 
@@ -84,6 +103,12 @@ module.exports = function(grunt) {
         tasks = tasks.concat(['browserify:standalone', 'browserify:promises']);
       }
     }
+
+    grunt.task.run(tasks);
+  });
+
+  grunt.registerTask('bump-version', function(env) {
+    var tasks = ['browserify:standalone', 'browserify:promises', 'bump'];
 
     grunt.task.run(tasks);
   });
