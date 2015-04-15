@@ -141,7 +141,7 @@ SolveBio.prototype.$http = function(path){
             }
             else{
               // Use 'reject' if this.status is different than 200
-              reject(JSON.parse(this.response));
+              reject(JSON.parse(this.response))
             }
           };
 
