@@ -234,5 +234,9 @@ _.forEach(restMethods, function(method) {
 
 // Export the SolveBio object for **Node.js**,
 // and add `SolveBio` as a global object.
-window.SolveBio = new SolveBio();
-module.exports = new SolveBio();
+if(window) {
+  window.SolveBio = new SolveBio();
+}
+else {
+  module.exports = new SolveBio();
+}
