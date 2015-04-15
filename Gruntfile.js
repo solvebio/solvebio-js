@@ -21,9 +21,26 @@ module.exports = function(grunt) {
           keepAlive: true
         }
       },
-      prod: {
+      standalone: {
         src: 'src/solvebio.js',
         dest: 'dist/solvebio.js',
+        options: {
+          browserifyOptions: {
+            debug: false,
+            fullPaths: false
+          },
+          ignore: ['bluebird'],
+          plugin: [
+            [collapse],
+            ['minifyify', {
+              map: false
+            }]
+          ]
+        }
+      },
+      promises: {
+        src: 'src/solvebio.js',
+        dest: 'dist/solvebio-promises.js',
         options: {
           browserifyOptions: {
             debug: false,
@@ -57,7 +74,12 @@ module.exports = function(grunt) {
     }
     else {
       tasks.push('eslint');
-      tasks.push('browserify:prod');
+      if(grunt.option('standalone')) {
+        tasks.push('browserify:standalone');
+      }
+      else {
+        tasks.push('browserify:promises');
+      }
     }
 
     grunt.task.run(tasks);

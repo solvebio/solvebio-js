@@ -28,7 +28,7 @@
 var console = require('./utils/console');
 var config = require('./config');
 var _ = require('./utils/underscore');
-var Promise = require('bluebird');
+var Promise = require('./utils/promise');
 
 var solveBioDepositoryManager = require('./resource-managers/depository-manager'),
   solveBioDepositoryVersionManager = require('./resource-managers/depository-version-manager'),
@@ -108,7 +108,30 @@ SolveBio.prototype.$http = function(path){
           xhr.onload = function () {
             if(this.status === 200){
               // Use 'resolve' if this.status equals 200
-              resolve(JSON.parse(this.response));
+              var response = JSON.parse(this.response);
+
+              // Pagination support
+              if(response.links) {
+                response.next = function() {
+
+                };
+
+                response.prev = function() {
+
+                };
+              }
+              else if(response.offset) {
+                // Dataset query response don't have next/prev links
+                response.next = function() {
+
+                };
+
+                response.prev = function() {
+
+                };
+              }
+
+              resolve(response);
             }
             else{
               // Use 'reject' if this.status is different than 200
