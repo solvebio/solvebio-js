@@ -112,22 +112,28 @@ SolveBio.prototype.$http = function(path){
 
               // Pagination support
               if(response.links) {
-                response.next = function() {
+                if(response.links.next) {
+                  response.next = function() {
+                    var nextPage = response.links.next.match(/^.*page=(\d)$/)[1];
+                    var newData = _.assign(JSON.parse(data) || {}, {page: nextPage});
+                    return core.ajax(method, path, newData, args);
+                  };
+                }
 
-                };
-
-                response.prev = function() {
-
-                };
+                if(response.links.prev) {
+                  response.prev = function() {
+                    var prevPage = response.links.prev.match(/^.*page=(\d)$/)[1];
+                    var newData = _.assign(JSON.parse(data) || {}, {page: prevPage});
+                    return core.ajax(method, path, newData, args);
+                  };
+                }
               }
               else if(response.offset) {
-                // Dataset query response don't have next/prev links
+                // Dataset query responses don't have links.next/prev
                 response.next = function() {
-
-                };
-
-                response.prev = function() {
-
+                  var nextOffset = response.offset;
+                  var newData = _.assign(JSON.parse(data) || {}, {offset: nextOffset});
+                  return core.ajax(method, path, newData, args);
                 };
               }
 

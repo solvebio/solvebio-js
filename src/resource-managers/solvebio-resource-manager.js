@@ -16,7 +16,7 @@ var solveBioResourceManager = function(solveBio, path, id) {
 /** @type {function(...[*])} */
 solveBioResourceManager.prototype.retrieve = function() {
   if(this._id) {
-    return this._solveBio._get(this._path + '/' + this._id, {});
+    return this._solveBio.get(this._path + '/' + this._id, {});
   }
   else {
     console.error('You need to specify an id.');
