@@ -77,8 +77,11 @@ module.exports = function(grunt) {
       if(grunt.option('standalone')) {
         tasks.push('browserify:standalone');
       }
-      else {
+      else if(grunt.option('promises')) {
         tasks.push('browserify:promises');
+      }
+      else {
+        tasks = tasks.concat(['browserify:standalone', 'browserify:promises']);
       }
     }
 

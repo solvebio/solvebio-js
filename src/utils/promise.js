@@ -66,10 +66,9 @@ if(_.keys(Promise).length === 0) {
   }
   else {
     // Running in NodeJS
-    if(this.Promise) {
-      Promise = this.Promise;
-    }
-    else {
+    var req = require; // Hack to prevent Browserify to bundle es6-promise...
+    Promise = this.Promise || req('es6-promise');
+    if(!Promise || _.keys(Promise).length === 0) {
       // Otherwise, raise an error.
       console.error('A Promise API was not found. You need to either use solvebio-promises package or load a third-party library that includes Promises (es6-promise or BlueBird).');
     }
