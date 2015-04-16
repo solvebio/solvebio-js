@@ -30,6 +30,11 @@ var config = require('./config');
 var _ = require('./utils/underscore');
 var Promise = require('./utils/promise');
 
+// NodeJS wrapper for the built-in http client to emulate the browser XMLHttpRequest object.
+var req = require;
+var _XMLHttpRequest = typeof window === 'undefined' || !window ? req('xmlhttprequest').XMLHttpRequest : XMLHttpRequest;
+
+
 var solveBioDepositoryManager = require('./resource-managers/depository-manager'),
   solveBioDepositoryVersionManager = require('./resource-managers/depository-version-manager'),
   solveBioDatasetManager = require('./resource-managers/dataset-manager'),
@@ -137,7 +142,7 @@ SolveBio.prototype.$http = function(path){
 
           // Instantiate XMLHttpRequest
           // IE6 and below are not supported...
-          var xhr = new XMLHttpRequest();
+          var xhr = new _XMLHttpRequest();
           url = '' + self._config.apiHost + '/' + url.replace(/^\/?/, '');
 
           if (method === 'GET') {
@@ -152,14 +157,14 @@ SolveBio.prototype.$http = function(path){
 
           console.log('Sending ' + method + ' request to ' + url);
           xhr.open(method, url, true);
-          xhr.setRequestHeader('Content-type', 'application/json');
+          xhr.setRequestHeader('Content-Type', 'application/json');
           xhr.setRequestHeader('Authorization', 'Bearer ' + self._config._accessToken);
           xhr.send(data);
 
           xhr.onload = function () {
             if(this.status === 200){
               // Use 'resolve' if this.status equals 200
-              var response = JSON.parse(this.response);
+              var response = JSON.parse(this.responseText);
 
               // Pagination support
               if(response.links) {
@@ -192,7 +197,7 @@ SolveBio.prototype.$http = function(path){
             }
             else{
               // Use 'reject' if this.status is different than 200
-              reject(JSON.parse(this.response));
+              reject(JSON.parse(this.responseText));
             }
           };
 
@@ -239,9 +244,4 @@ _.forEach(restMethods, function(method) {
 
 // Export the SolveBio object for **Node.js**,
 // and add `SolveBio` as a global object.
-if(window) {
-  window.SolveBio = new SolveBio();
-}
-else {
-  module.exports = new SolveBio();
-}
+global.SolveBio = module.exports = new SolveBio();

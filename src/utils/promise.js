@@ -12,7 +12,7 @@ var Promise = require('bluebird');
 
 if(_.keys(Promise).length === 0) {
   // Using the stand-alone library
-  if(window) {
+  if(typeof window !== 'undefined' && window) {
     // Determine the correct Promise factory.
     // Try to use libraries before native Promises since most Promise users
     // are already using a library.
@@ -67,7 +67,7 @@ if(_.keys(Promise).length === 0) {
   else {
     // Running in NodeJS
     var req = require; // Hack to prevent Browserify to bundle es6-promise...
-    Promise = this.Promise || req('es6-promise');
+    Promise = this.Promise || req('es6-promise').Promise;
     if(!Promise || _.keys(Promise).length === 0) {
       // Otherwise, raise an error.
       console.error('A Promise API was not found. You need to either use solvebio-promises package or load a third-party library that includes Promises (es6-promise or BlueBird).');

@@ -1,7 +1,9 @@
 {
-  "name": "solveBio-js",
+  "name": "SolveBio-js",
   "author": "SolveBio",
   "version": "0.0.1",
+  "description": "SolveBio Javascript Client.",
+  "main": "./src/solvebio.js",
   "homepage": "https://www.solvebio.com",
   "licenses": {
     "type": "Apache",
@@ -12,7 +14,8 @@
     "url": "git@github.com:solvebio/solvebio-js.git"
   },
   "dependencies": {
-    "bluebird": "^2.9.24"
+    "bluebird": "^2.9.24",
+    "xmlhttprequest": "^1.7.0"
   },
   "devDependencies": {
     "browserify": "^9.0.8",
