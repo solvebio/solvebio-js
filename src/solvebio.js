@@ -41,7 +41,7 @@ var solveBioDepositoryManager = require('./resource-managers/depository-manager'
  */
 
 var SolveBio = function() {
-  this.VERSION = config.DERSION;
+  this.VERSION = config.VERSION;
   this._config = config;
   this.Depository = function(id) {
     return new solveBioDepositoryManager(this, id);
