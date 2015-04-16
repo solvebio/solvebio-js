@@ -32,7 +32,8 @@ var Promise = require('./utils/promise');
 
 var solveBioDepositoryManager = require('./resource-managers/depository-manager'),
   solveBioDepositoryVersionManager = require('./resource-managers/depository-version-manager'),
-  solveBioDatasetManager = require('./resource-managers/dataset-manager');
+  solveBioDatasetManager = require('./resource-managers/dataset-manager'),
+  Filter = require('./helpers/filter');
 
 /**
  * SolveBio Object
@@ -50,6 +51,9 @@ var SolveBio = function() {
   };
   this.dataset = function(id) {
     return new solveBioDatasetManager(this, id);
+  };
+  this.filter = function(filters) {
+    return new Filter(filters);
   };
 
   return this;

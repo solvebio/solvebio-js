@@ -21,7 +21,7 @@ solveBioDatasetManager.prototype.query = function(options) {
   if(this._id) {
     return this._solveBio.post(this._path + '/' + this._id + '/data', {
       genome_build: options.genome_build,
-      filters: options.filters,
+      filters: [options.filters],
       fields: options.fields
     });
   }
@@ -33,6 +33,17 @@ solveBioDatasetManager.prototype.query = function(options) {
 solveBioDatasetManager.prototype.fields = function() {
   if(this._id) {
     return this._solveBio.get(this._path + '/' + this._id + '/fields', {});
+  }
+  else {
+    console.error('You need to specify an id.');
+  }
+};
+
+solveBioDatasetManager.prototype.filter = function(filter) {
+  if(this._id) {
+    return this.query({
+      filters: filter.filters
+    });
   }
   else {
     console.error('You need to specify an id.');
