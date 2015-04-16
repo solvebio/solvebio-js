@@ -108,7 +108,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('bump-version', function(env) {
-    var tasks = ['browserify:standalone', 'browserify:promises', 'bump'];
+    var tasks = ['browserify:standalone', 'browserify:promises', 'bump:patch'];
 
     grunt.task.run(tasks);
   });

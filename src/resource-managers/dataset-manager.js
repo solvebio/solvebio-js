@@ -1,6 +1,7 @@
 'use strict';
 
 var solveBioResourceManager = require('./solvebio-resource-manager');
+var Filter = require('../helpers/filter');
 
 /**
  * SolveBio Dataset Manager Object
@@ -19,9 +20,15 @@ solveBioDatasetManager.prototype = Object.create(solveBioResourceManager.prototy
 
 solveBioDatasetManager.prototype.query = function(options) {
   if(this._id) {
+    options = options || {};
+    if(options.filters instanceof Filter) {
+      options.filters = [options.filters.filters];
+    }
     return this._solveBio.post(this._path + '/' + this._id + '/data', {
+      limit: options.limit,
+      offset: options.offset,
       genome_build: options.genome_build,
-      filters: [options.filters],
+      filters: options.filters || undefined,
       fields: options.fields
     });
   }
@@ -42,7 +49,7 @@ solveBioDatasetManager.prototype.fields = function() {
 solveBioDatasetManager.prototype.filter = function(filter) {
   if(this._id) {
     return this.query({
-      filters: filter.filters
+      filters: filter
     });
   }
   else {
