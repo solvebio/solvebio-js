@@ -36,22 +36,55 @@ var solveBioDepositoryManager = require('./resource-managers/depository-manager'
   Filter = require('./helpers/filter');
 
 /**
- * SolveBio Object
+ * SolveBio Global Object
+ *
+ * Contains the API resources managers (Depository, DepositoryVersion and Dataset) and the Filter constructor.
+ * This object performs every AJAX call as well using the get(), post(), delete(), update() methods.
+ *
+ * SolveBio Javascript library doesn't use callbacks at all but returns Promises.
+ * 'solvebio.js' stand-alone build does not include any Promise polyfill.
+ * Just be sure to include a Promise API (we support Q, jQuery, AngularJS, or a Promise polyfill) before SolveBio is loaded,
+ * and it will use your Promise API.
+ * Otherwise you should use the 'solvebio-promises.js' build which already includes the BlueBird Promise library.
+ *
  * @constructor
  */
 
 var SolveBio = function() {
+  /** @public */
   this.VERSION = config.VERSION;
+
+  /** @private */
   this._config = config;
+
+  /**
+   * @param {String} id The depository ID or full name.
+   * @constructor
+   */
   this.Depository = function(id) {
     return new solveBioDepositoryManager(this, id);
   };
+
+  /**
+   * @param {String} id The depository version ID or full name.
+   * @constructor
+   */
   this.DepositoryVersion = function(id) {
     return new solveBioDepositoryVersionManager(this, id);
   };
+
+  /**
+   * @param {String} id The dataset ID or full name.
+   * @constructor
+   */
   this.Dataset = function(id) {
     return new solveBioDatasetManager(this, id);
   };
+
+  /**
+   * @param {Object} filters Query filters object.
+   * @constructor
+   */
   this.Filter = function(filters) {
     return new Filter(filters);
   };
@@ -71,6 +104,13 @@ var serialize = function(obj) {
   return str.join('&');
 };
 
+/**
+ * Initialize the SolveBio global object.
+ *
+ * @param {Object} userConfig User SolveBio configuration.
+ * @param {String} userConfig.accessToken User access token.
+ * @param {Boolean} [userConfig.debug=false] userConfig.debug Activate/Deactivate console logs and warnings.
+ */
 SolveBio.prototype.init = function(userConfig) {
   this._config._accessToken = userConfig.accessToken;
   config.DEBUG = !!userConfig.debug;
@@ -80,6 +120,12 @@ var buildURL = function(url, params) {
   return url + (url.indexOf('?') > 0 ? '&' : '?') + serialize(params);
 };
 
+/**
+ * Performs an AJAX call and returns a Promise.
+ *
+ * @param {String} path URL API path.
+ * @returns {Promise} API response.
+ */
 SolveBio.prototype.$http = function(path){
   var self = this;
   var core = {
@@ -90,6 +136,7 @@ SolveBio.prototype.$http = function(path){
         return new Promise(function(resolve, reject) {
 
           // Instantiate XMLHttpRequest
+          // IE6 and below are not supported...
           var xhr = new XMLHttpRequest();
           url = '' + self._config.apiHost + '/' + url.replace(/^\/?/, '');
 
@@ -176,58 +223,6 @@ SolveBio.prototype.$http = function(path){
     }
   };
 };
-
-//SolveBio.prototype._rest = function(method, path, data, success, error) {
-//  if(this._config._accessToken) {
-//    method = method.toUpperCase();
-//    var url = '' + this._config.apiHost + '/' + path.replace(/^\/?/, '');
-//    data = data || {};
-//    success = success || function () {
-//    };
-//    error = error || function () {
-//    };
-//
-//    if (method === 'GET' || method === 'HEAD') {
-//      // serialize the data into the query parameters
-//      url = buildURL(url, data);
-//      data = null;
-//    } else {
-//      // JSONify the data into the request body
-//      data = JSON.stringify(data, null, 4);
-//    }
-//
-//    // IE6 and below are not supported
-//    var xhr = new XMLHttpRequest();
-//
-//    xhr.onreadystatechange = function () {
-//      if (xhr.readyState === 4 && xhr.status !== 200) {
-//        try {
-//          error(JSON.parse(xhr.responseText));
-//        } catch (_error) {
-//          error(xhr.responseText);
-//        }
-//      }
-//      if (xhr.readyState === 4 && xhr.status === 200) {
-//        try {
-//          success(JSON.parse(xhr.responseText));
-//        } catch (_error) {
-//          error(xhr.responseText);
-//        }
-//      }
-//    };
-//
-//    console.log('Sending ' + method + ' request to ' + url);
-//    xhr.open(method, url, true);
-//    xhr.setRequestHeader('Content-type', 'application/json');
-//    xhr.setRequestHeader('Authorization', 'Bearer ' + this._config._accessToken);
-//    xhr.send(data);
-//
-//    return xhr;
-//  }
-//  else {
-//    console.error('You must initialize the SolveBio instance with a valid Token: SolveBio.init(/* configObject */)');
-//  }
-//};
 
 /* REST shortcut methods */
 

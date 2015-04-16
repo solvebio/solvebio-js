@@ -4,16 +4,28 @@ var console = require('../utils/console');
 
 /**
  * SolveBio Resource Manager Object
+ *
+ * Class representing an API resource manager.
+ *
  * @constructor
  */
 
 var solveBioResourceManager = function(solveBio, path, id) {
+  /** @private */
   this._solveBio = solveBio;
+
+  /** @private */
   this._path = path;
+
+  /** @private */
   this._id = id;
 };
 
-/** @type {function(...[*])} */
+/**
+ * Retrieves a specific resource if a valid ID or full name is provided.
+ *
+ * @returns {Promise} API response.
+ */
 solveBioResourceManager.prototype.retrieve = function() {
   if(this._id) {
     return this._solveBio.get(this._path + '/' + this._id, {});
@@ -23,52 +35,13 @@ solveBioResourceManager.prototype.retrieve = function() {
   }
 };
 
-/** @type {function(...[*])} */
+/**
+ * List all resources.
+ *
+ * @returns {Promise} API response.
+ */
 solveBioResourceManager.prototype.all = function() {
-  var self = this;
-
-  return this._solveBio.get(this._path, {})
-    .then(function(data) {
-      self._nextURL = data.links.next;
-      self._prevURL = data.links.prev;
-      return data;
-    });
+  return this._solveBio.get(this._path, {});
 };
-
-/** @type {function(...[*])} */
-solveBioResourceManager.prototype.next = function() {
-  if(this.hasNext()) {
-    return this._solveBio.get(this._nextURL, {})
-      .then(function(data) {
-        self._nextURL = data.links.next;
-        self._prevURL = data.links.prev;
-        return data;
-      });
-  }
-};
-
-/** @type {function(...[*])} */
-solveBioResourceManager.prototype.prev = function() {
-  if(this.hasPrev()) {
-    return this._solveBio.get(this._prevURL, {})
-      .then(function(data) {
-        self._nextURL = data.links.next;
-        self._prevURL = data.links.prev;
-        return data;
-      });
-  }
-};
-
-/** @type {function(...[*])} */
-solveBioResourceManager.prototype.hasNext = function () {
-  return !!this._nextURL;
-};
-
-/** @type {function(...[*])} */
-solveBioResourceManager.prototype.hasPrev = function () {
-  return !!this._prevURL;
-};
-
-
 
 module.exports = solveBioResourceManager;
