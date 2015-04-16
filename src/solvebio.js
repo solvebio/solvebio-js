@@ -23,6 +23,14 @@
 
  Globals should be all caps
  */
+/**
+ * SolveBio module.
+ * @module solvebio
+ * @see module:resource-managers/depository-manager
+ * @see module:resource-managers/depository-version-manager
+ * @see module:resource-managers/dataset-manager
+ * @see module:helpers/filter
+ */
 'use strict';
 
 var console = require('./utils/console');
@@ -35,9 +43,9 @@ var req = require;
 var _XMLHttpRequest = typeof window === 'undefined' || !window ? req('xmlhttprequest').XMLHttpRequest : XMLHttpRequest;
 
 
-var solveBioDepositoryManager = require('./resource-managers/depository-manager'),
-  solveBioDepositoryVersionManager = require('./resource-managers/depository-version-manager'),
-  solveBioDatasetManager = require('./resource-managers/dataset-manager'),
+var DepositoryManager = require('./resource-managers/depository-manager'),
+  DepositoryVersionManager = require('./resource-managers/depository-version-manager'),
+  DatasetManager = require('./resource-managers/dataset-manager'),
   Filter = require('./helpers/filter');
 
 /**
@@ -64,31 +72,31 @@ var SolveBio = function() {
 
   /**
    * @param {String} id The depository ID or full name.
-   * @constructor
+   * @returns {DepositoryManager} Instance of DepositoryManager.
    */
   this.Depository = function(id) {
-    return new solveBioDepositoryManager(this, id);
+    return new DepositoryManager(this, id);
   };
 
   /**
    * @param {String} id The depository version ID or full name.
-   * @constructor
+   * @returns {DepositoryVersionManager} Instance of DepositoryVersionManager.
    */
   this.DepositoryVersion = function(id) {
-    return new solveBioDepositoryVersionManager(this, id);
+    return new DepositoryVersionManager(this, id);
   };
 
   /**
    * @param {String} id The dataset ID or full name.
-   * @constructor
+   * @returns {DatasetManager} Instance of DatasetManager.
    */
   this.Dataset = function(id) {
-    return new solveBioDatasetManager(this, id);
+    return new DatasetManager(this, id);
   };
 
   /**
    * @param {Object} filters Query filters object.
-   * @constructor
+   * @returns {Filter} Instance of Filter.
    */
   this.Filter = function(filters) {
     return new Filter(filters);
@@ -114,7 +122,7 @@ var serialize = function(obj) {
  *
  * @param {Object} userConfig User SolveBio configuration.
  * @param {String} userConfig.accessToken User access token.
- * @param {Boolean} [userConfig.debug=false] userConfig.debug Activate/Deactivate console logs and warnings.
+ * @param {Boolean} [userConfig.debug=false] Activate/Deactivate console logs and warnings.
  */
 SolveBio.prototype.init = function(userConfig) {
   this._config._accessToken = userConfig.accessToken;

@@ -1,16 +1,20 @@
+/**
+ * Resource Manager module.
+ * @module resource-managers/resource-manager
+ */
 'use strict';
 
 var console = require('../utils/console');
 
 /**
- * SolveBio Resource Manager Object
+ * Resource Manager Object
  *
  * Class representing an API resource manager.
  *
  * @constructor
  */
 
-var solveBioResourceManager = function(solveBio, path, id) {
+var ResourceManager = function(solveBio, path, id) {
   /** @private */
   this._solveBio = solveBio;
 
@@ -26,7 +30,7 @@ var solveBioResourceManager = function(solveBio, path, id) {
  *
  * @returns {Promise} API response.
  */
-solveBioResourceManager.prototype.retrieve = function() {
+ResourceManager.prototype.retrieve = function() {
   if(this._id) {
     return this._solveBio.get(this._path + '/' + this._id, {});
   }
@@ -40,8 +44,8 @@ solveBioResourceManager.prototype.retrieve = function() {
  *
  * @returns {Promise} API response.
  */
-solveBioResourceManager.prototype.all = function() {
+ResourceManager.prototype.all = function() {
   return this._solveBio.get(this._path, {});
 };
 
-module.exports = solveBioResourceManager;
+module.exports = ResourceManager;

@@ -1,9 +1,13 @@
+/**
+ * Filter module.
+ * @module helpers/filter
+ */
 'use strict';
 
 var _ = require('../utils/underscore');
 
 /**
- * SolveBio Filter Object
+ * Filter Object
  *
  * Class representing a query filter.
  * The Javascript client allows you to create filters using the Filter object and
@@ -14,7 +18,7 @@ var _ = require('../utils/underscore');
  * var filter2 = SolveBio.Filter({gene_symbol: 'BRCA1'});
  * var combinedFilter = filter1.or(filter2);
  *
- * @constructors
+ * @constructor
  */
 
 var Filter = function(filters) {

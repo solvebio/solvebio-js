@@ -1,10 +1,15 @@
+/**
+ * DepositoryVersion Manager module.
+ * @module resource-managers/depository-version-manager
+ * @see module:resource-managers/resource-manager
+ */
 'use strict';
 
 var console = require('../utils/console');
-var solveBioResourceManager = require('./solvebio-resource-manager');
+var ResourceManager = require('./resource-manager');
 
 /**
- * SolveBio DepositoryVersions Manager Object
+ * DepositoryVersion Manager Object
  *
  * Class representing an API Depository Versions manager.
  * Depositories and datasets may be updated periodically.
@@ -13,25 +18,26 @@ var solveBioResourceManager = require('./solvebio-resource-manager');
  * Example version names include: 1.0.0 and 0.0.1-2014-01-01.
  *
  * @constructor
- * @augments solveBioResourceManager
+ * @augments ResourceManager
+ * @requires module:resource-managers/resource-manager
  */
 
-var solveBioDepositoryVersionManager = function(solveBio, id) {
+var DepositoryVersionManager = function(solveBio, id) {
   var path = 'depository_versions';
 
   // Call the parent constructor, making sure (using Function#call)
   // that "this" is set correctly during the call
-  solveBioResourceManager.call(this, solveBio, path, id);
+  ResourceManager.call(this, solveBio, path, id);
 };
 
-solveBioDepositoryVersionManager.prototype = Object.create(solveBioResourceManager.prototype);
+DepositoryVersionManager.prototype = Object.create(ResourceManager.prototype);
 
 /**
  * List datasets in a depository version.
  *
  * @returns {Promise} API response.
  */
-solveBioDepositoryVersionManager.prototype.datasets = function() {
+DepositoryVersionManager.prototype.datasets = function() {
   if(this._id) {
     return this._solveBio.get(this._path + '/' + this._id + '/datasets', {});
   }
@@ -46,7 +52,7 @@ solveBioDepositoryVersionManager.prototype.datasets = function() {
  *
  * @returns {Promise} API response.
  */
-solveBioDepositoryVersionManager.prototype.changelog = function() {
+DepositoryVersionManager.prototype.changelog = function() {
   if(this._id) {
     return this._solveBio.get(this._path + '/' + this._id + '/changelog', {});
   }
@@ -55,4 +61,4 @@ solveBioDepositoryVersionManager.prototype.changelog = function() {
   }
 };
 
-module.exports = solveBioDepositoryVersionManager;
+module.exports = DepositoryVersionManager;

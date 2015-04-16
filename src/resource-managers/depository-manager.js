@@ -1,34 +1,40 @@
+/**
+ * Depository Manager module.
+ * @module resource-managers/depository-manager
+ * @see module:resource-managers/resource-manager
+ */
 'use strict';
 
-var solveBioResourceManager = require('./solvebio-resource-manager');
+var ResourceManager = require('./resource-manager');
 
 /**
- * SolveBio Depository Manager Object
+ * Depository Manager Object
  *
  * Class representing an API depository manager.
  * A depository (or data repository) is like a source code repository, but for datasets.
  * Depositories have one or more versions, which in turn contain one or more datasets.
  *
  * @constructor
- * @augments solveBioResourceManager
+ * @augments ResourceManager
+ * @requires module:resource-managers/resource-manager
  */
 
-var solveBioDepositoryManager = function(solveBio, id) {
+var DepositoryManager = function(solveBio, id) {
   var path = 'depositories';
 
   // Call the parent constructor, making sure (using Function#call)
   // that "this" is set correctly during the call
-  solveBioResourceManager.call(this, solveBio, path, id);
+  ResourceManager.call(this, solveBio, path, id);
 };
 
-solveBioDepositoryManager.prototype = Object.create(solveBioResourceManager.prototype);
+DepositoryManager.prototype = Object.create(ResourceManager.prototype);
 
 /**
  * Retrieve the versions of a depository.
  *
  * @returns {Promise} API response.
  */
-solveBioDepositoryManager.prototype.versions = function() {
+DepositoryManager.prototype.versions = function() {
   if(this._id) {
     return this._solveBio.get(this._path + '/' + this._id + '/versions', {});
   }
@@ -37,4 +43,4 @@ solveBioDepositoryManager.prototype.versions = function() {
   }
 };
 
-module.exports = solveBioDepositoryManager;
+module.exports = DepositoryManager;

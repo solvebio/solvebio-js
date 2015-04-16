@@ -2,6 +2,7 @@
 dev_dist
 node_modules
 coverage/*
+out/*
 npm-debug.log
 bower_components
 tmp
