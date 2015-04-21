@@ -61,7 +61,7 @@ module.exports = function(grunt) {
       options: {
         configFile: '.eslintrc'
       },
-      target: ['src/**/*.js']
+      target: ['src/**/*.js', 'tests/**/*.spec.js']
     },
     bump: {
       options: {

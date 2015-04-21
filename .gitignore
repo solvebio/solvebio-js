@@ -6,5 +6,4 @@ out/*
 npm-debug.log
 bower_components
 tmp
-build.config.local.js
 .idea/*
