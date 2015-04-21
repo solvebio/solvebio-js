@@ -23,20 +23,6 @@ var createAssigner = function(keysFunc, undefinedOnly) {
   };
 };
 
-// Is a given variable an object?
-_.isObject = function(obj) {
-  var type = typeof obj;
-  return type === 'function' || type === 'object' && !!obj;
-};
-
-// Optimize `isFunction` if appropriate. Work around some typeof bugs in old v8,
-// IE 11 (#1621), and in Safari 8 (#1929).
-if (typeof /./ != 'function' && typeof Int8Array != 'object') {
-  _.isFunction = function(obj) {
-    return typeof obj == 'function' || false;
-  };
-}
-
 _.keys = function(obj) {
   return nativeKeys(obj);
 };
@@ -52,6 +38,13 @@ _.property = property;
 // Assigns a given object with all the own properties in the passed-in object(s)
 // (https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
 _.extendOwn = _.assign = createAssigner(_.keys);
+
+
+// Is a given variable an object?
+_.isObject = function(obj) {
+  var type = typeof obj;
+  return type === 'function' || type === 'object' && !!obj;
+};
 
 // Returns whether an object has a given set of `key:value` pairs.
 _.isMatch = function(object, attrs) {
@@ -182,5 +175,20 @@ _.each = _.forEach = function(obj, iteratee, context) {
   }
   return obj;
 };
+
+// Add some isType methods: isArguments, isFunction, isString, isNumber, isDate, isRegExp, isError.
+_.each(['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp', 'Error'], function(name) {
+  _['is' + name] = function(obj) {
+    return toString.call(obj) === '[object ' + name + ']';
+  };
+});
+
+// Optimize `isFunction` if appropriate. Work around some typeof bugs in old v8,
+// IE 11 (#1621), and in Safari 8 (#1929).
+if (typeof /./ != 'function' && typeof Int8Array != 'object') {
+  _.isFunction = function(obj) {
+    return typeof obj == 'function' || false;
+  };
+}
 
 module.exports = _;

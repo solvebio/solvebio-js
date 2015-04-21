@@ -70,7 +70,12 @@ module.exports = function(config) {
     singleRun: false,
 
     browserify: {
-      debug: true
+      debug: true,
+      transform: [
+        [{
+          ignore: ['**/*.spec.js', '**/*.html', '**/bower_components/**', '**/node_modules/**']
+        }, 'browserify-istanbul']
+      ]
     }
   });
 };

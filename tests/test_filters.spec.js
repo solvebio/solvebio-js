@@ -17,6 +17,19 @@ describe('Tests fitlers', function() {
     expect(filter.filters).toEqual(['rcv_accession', 'RCV000058095']);
   });
 
+  it('should create an and filter', function() {
+    var filter = SolveBio.Filter({
+      rcv_accession: 'RCV000058095',
+      clinical_significance: 'Pathogenic'
+    });
+    expect(filter.filters).toEqual({
+      and: [
+        ['rcv_accession', 'RCV000058095'],
+        ['clinical_significance', 'Pathogenic']
+      ]
+    });
+  });
+
   it('should combine filters with all()', function() {
     var filter1 = SolveBio.Filter({
       gene_symbol: 'BRCA1'
