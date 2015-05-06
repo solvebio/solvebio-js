@@ -29,6 +29,7 @@
  * @see module:resource-managers/depository-manager
  * @see module:resource-managers/depository-version-manager
  * @see module:resource-managers/dataset-manager
+ * @see module:resource-managers/dataset-field-manager
  * @see module:helpers/filter
  */
 'use strict';
@@ -46,6 +47,7 @@ var _XMLHttpRequest = typeof window === 'undefined' || !window ? req('xmlhttpreq
 var DepositoryManager = require('./resource-managers/depository-manager'),
   DepositoryVersionManager = require('./resource-managers/depository-version-manager'),
   DatasetManager = require('./resource-managers/dataset-manager'),
+  DatasetFieldManager = require('./resource-managers/dataset-field-manager'),
   Filter = require('./helpers/filter');
 
 /**
@@ -92,6 +94,14 @@ var SolveBio = function() {
    */
   this.Dataset = function(id) {
     return new DatasetManager(this, id);
+  };
+
+  /**
+   * @param {String} id The dataset Field ID or name.
+   * @returns {DatasetFieldManager} Instance of DatasetFieldManager.
+   */
+  this.DatasetField = function(id) {
+    return new DatasetFieldManager(this, id);
   };
 
   /**
