@@ -28,7 +28,7 @@ module.exports = function(config) {
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
       'src/**/*.js': ['coverage'],
-      'tests/*.spec.js': ['browserify']
+      'tests/*.js': ['browserify']
     },
 
 
@@ -71,6 +71,7 @@ module.exports = function(config) {
 
     browserify: {
       debug: true,
+      src: 'tests/init.js',
       transform: [
         [{
           ignore: ['**/*.spec.js', '**/*.html', '**/bower_components/**', '**/node_modules/**']
