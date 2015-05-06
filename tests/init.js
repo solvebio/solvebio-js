@@ -17,9 +17,13 @@ module.exports = function() {
       200, { // status
         'Content-Type': 'application/json' // headers
       },
-      JSON.stringify({
-        url: request.requestURL
-      }) //body
+      JSON.stringify({ //body
+        url: request.requestURL,
+        links: {
+          next: request.requestURL + 'page=3',
+          prev: request.requestURL + 'page=2'
+        }
+      })
     );
   }
 
