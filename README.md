@@ -1,17 +1,28 @@
 # solvebio-js
 SolveBio Javascript SDK
 
-### Usage
+## Usage
+
+### Initialize SolveBio
 ```javascript
 // Initialize SolveBio Javascript client with your API key.
 SolveBio.init({
   accessToken: <YOUR API KEY>
 });
+```
 
-// Retrieve a specific dataset (metadata)
+### Retrieve a specific dataset
+```javascript
 var dataset = SolveBio.Dataset('ClinVar/Variants');
 
-// Create filters
+dataset.retrieve()
+  .then(function(response) {
+    console.log(response);
+  });
+```
+
+### Create filters
+```javascript
 var filter1 = SolveBio.Filter({
     gene_symbol: 'BRCA1'
   }), 
@@ -20,14 +31,18 @@ var filter1 = SolveBio.Filter({
   });
   
 var filter = filter1.or(filter2);
+```
   
-// Apply Filters and Retrieve query results
+### Apply Filters and Retrieve query results
+```javascript
 dataset.filter(filter)
   .then(function(response) {
     console.log(response.results);
   });
+```
 
-// Retrieve the list of all datasets using pagination
+### Pagination: Retrieve the list of all datasets
+```javascript
 function loadAll(promise) {
   var deferred = Promise.defer(),
     data = [];
@@ -56,6 +71,8 @@ loadAll(SolveBio.Dataset().all())
  });
 ```
 
+## Developing
+
 ### Building from sources
 First install Node/NPM then do this:
 
@@ -66,8 +83,7 @@ Then:
     npm install
     grunt build
 
-### Developing
-
+### Contributing to solvebio-js
 Use the `build:dev` task:
 
     npm install
