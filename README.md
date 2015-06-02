@@ -1,11 +1,21 @@
 # solvebio-js
 SolveBio Javascript SDK
 
+## Features
+* Full SolveBio Api binding
+* Works in NodeJS and in the browser
+* Support of promises
+* Uses Angular, jQuery, Q or native promises if available
+* Special build `solvebio-promises.js` includes [BlueBird](https://github.com/petkaantonov/bluebird) promises API
+* Support [pagination](#retrieve-a-list-of-paged-results)
+
 ## Usage
 
 ### Initialize SolveBio
 ```javascript
 // Initialize SolveBio Javascript client with your API key.
+var SolveBio = require('solvebio');
+
 SolveBio.init({
   accessToken: <YOUR API KEY>
 });
@@ -17,7 +27,7 @@ var dataset = SolveBio.Dataset('ClinVar/Variants');
 
 dataset.retrieve()
   .then(function(response) {
-    console.log(response);
+    // Your code goes here...
   });
 ```
 
@@ -37,12 +47,14 @@ var filter = filter1.or(filter2);
 ```javascript
 dataset.filter(filter)
   .then(function(response) {
-    console.log(response.results);
+    // Your code goes here...
   });
 ```
 
-### Pagination: Retrieve the list of all datasets
+### Retrieve a list of paged results
 ```javascript
+var Promise = require('es6-promise').Promise;
+
 function loadAll(promise) {
   var deferred = Promise.defer(),
     data = [];
@@ -67,7 +79,7 @@ function loadAll(promise) {
 
 loadAll(SolveBio.Dataset().all())
  .then(function(datasets) {
-   console.log(datasets);
+   // Your code goes here...
  });
 ```
 
