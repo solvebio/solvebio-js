@@ -3,5 +3,5 @@
 module.exports = {
   apiHost: 'https://api.solvebio.com/v1',
   DEBUG: false,
-  VERSION: '0.0.7'
+  VERSION: '1.0.0'
 };

@@ -1,7 +1,7 @@
 {
   "name": "solvebio",
   "author": "SolveBio",
-  "version": "0.0.7",
+  "version": "1.0.0",
   "description": "SolveBio Javascript client",
   "main": "./src/solvebio.js",
   "homepage": "https://www.solvebio.com",
