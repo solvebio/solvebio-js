@@ -7,6 +7,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-eslint');
   grunt.loadNpmTasks('grunt-bump');
+  grunt.loadNpmTasks('grunt-karma');
 
   var taskConfig = {
     pkg: grunt.file.readJSON('package.json'),
@@ -56,7 +57,12 @@ module.exports = function(grunt) {
         }
       }
     },
-
+    karma: {
+      unit: {
+        configFile: 'karma.conf.js',
+        singleRun: true
+      }
+    },
     eslint: {
       options: {
         configFile: '.eslintrc'
@@ -85,6 +91,12 @@ module.exports = function(grunt) {
 
   grunt.initConfig(grunt.util._.extend(taskConfig));
 
+  grunt.registerTask('test', function(env) {
+    var tasks = ['karma', 'eslint'];
+
+    grunt.task.run(tasks);
+  });
+
   grunt.registerTask('build', function(env) {
     var tasks = [];
 
@@ -92,7 +104,7 @@ module.exports = function(grunt) {
       tasks.push('browserify:dev');
     }
     else {
-      tasks.push('eslint');
+      tasks.push('test');
       if(grunt.option('standalone')) {
         tasks.push('browserify:standalone');
       }
@@ -108,7 +120,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('bump-version', function(env) {
-    var tasks = ['browserify:standalone', 'browserify:promises', 'bump:patch'];
+    var tasks = ['test', 'browserify:standalone', 'browserify:promises', 'bump:patch'];
 
     grunt.task.run(tasks);
   });

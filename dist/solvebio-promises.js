@@ -8,7 +8,7 @@ return s.promise=d,d},e.prototype._setDisposable=function(t){this._bitField=2621
 },{"2":2}],2:[function(require,module,exports){
 function drainQueue(){if(!draining){draining=!0;for(var e,o=queue.length;o;){e=queue,queue=[];for(var r=-1;++r<o;)e[r]();o=queue.length}draining=!1}}function noop(){}var process=module.exports={},queue=[],draining=!1;process.nextTick=function(e){queue.push(e),draining||setTimeout(drainQueue,0)},process.title="browser",process.browser=!0,process.env={},process.argv=[],process.version="",process.versions={},process.on=noop,process.addListener=noop,process.once=noop,process.off=noop,process.removeListener=noop,process.removeAllListeners=noop,process.emit=noop,process.binding=function(e){throw new Error("process.binding is not supported")},process.cwd=function(){return"/"},process.chdir=function(e){throw new Error("process.chdir is not supported")},process.umask=function(){return 0};
 },{}],3:[function(require,module,exports){
-"use strict";module.exports={apiHost:"https://api.solvebio.com/v1",DEBUG:!1,VERSION:"0.0.3"};
+"use strict";module.exports={apiHost:"https://api.solvebio.com/v1",DEBUG:!1,VERSION:"0.0.4"};
 },{}],4:[function(require,module,exports){
 "use strict";var _=require(13),Filter=function(t){var r=_.keys(t);1===r.length?this.filters=[r[0],t[r[0]]]:this.filters={and:_.map(r,function(r){return[r,t[r]]})}};Filter.prototype.and=function(t){return this.filters={and:[this.filters,t.filters]},this},Filter.prototype.or=function(t){return this.filters={or:[this.filters,t.filters]},this},Filter.prototype.not=function(){return this.filters={not:this.filters},this},module.exports=Filter;
 },{"13":13}],5:[function(require,module,exports){
