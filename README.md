@@ -12,12 +12,13 @@ SolveBio Javascript SDK
 ## Usage
 
 ### Initialize SolveBio
+Initialize SolveBio Javascript client with your Oauth token.
+Please contact us at [support@solvebio.com](mailto:support@solvebio.com?subject=[Oauth token request]) to get your Oauth token.
 ```javascript
-// Initialize SolveBio Javascript client with your API key.
 var SolveBio = require('solvebio');
 
 SolveBio.init({
-  accessToken: <YOUR API KEY>
+  accessToken: <YOUR OAUTH TOKEN>
 });
 ```
 
