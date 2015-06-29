@@ -71,7 +71,7 @@ module.exports = function(grunt) {
     },
     bump: {
       options: {
-        files: ['package.json', 'src/config.js'],
+        files: ['package.json', 'src/config.js', 'dist/**/*.js'],
         updateConfigs: [],
         commit: true,
         commitMessage: 'Released version: %VERSION%',
@@ -120,7 +120,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('bump-version', function(env) {
-    var tasks = ['test', 'bump:patch', 'browserify:standalone', 'browserify:promises'];
+    var tasks = ['test', 'browserify:standalone', 'browserify:promises', 'bump:patch'];
 
     grunt.task.run(tasks);
   });

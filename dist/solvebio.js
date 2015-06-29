@@ -1,7 +1,7 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 
 },{}],2:[function(require,module,exports){
-"use strict";module.exports={apiHost:"https://api.solvebio.com/v1",DEBUG:!1,VERSION:"0.0.4"};
+"use strict";module.exports={apiHost:"https://api.solvebio.com/v1",DEBUG:!1,VERSION:"0.0.7"};
 },{}],3:[function(require,module,exports){
 "use strict";var _=require(12),Filter=function(t){var r=_.keys(t);1===r.length?this.filters=[r[0],t[r[0]]]:this.filters={and:_.map(r,function(r){return[r,t[r]]})}};Filter.prototype.and=function(t){return this.filters={and:[this.filters,t.filters]},this},Filter.prototype.or=function(t){return this.filters={or:[this.filters,t.filters]},this},Filter.prototype.not=function(){return this.filters={not:this.filters},this},module.exports=Filter;
 },{"12":12}],4:[function(require,module,exports){
