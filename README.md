@@ -11,6 +11,23 @@ SolveBio Javascript SDK
 
 ## Usage
 
+### Install
+#### npm
+    npm install solvebio
+Then `require('solvebio')` in your code.
+
+#### bower
+    bower install solvebio
+Then add a `<script>` to your `index.html`:
+
+```html
+<!--- If you already have a promise library loaded, just include solvebio.js --->
+<script src="/bower_components/solvebio/dist/solvebio.js"></script>
+
+<!--- If you don't include solvebio-promises.js. This version is bundled with the BlueBird promise library. --->
+<script src="/bower_components/solvebio/dist/solvebio-promises.js"></script>
+```
+
 ### Initialize SolveBio
 Initialize SolveBio Javascript client with your Oauth token.
 Please contact us at [support@solvebio.com](mailto:support@solvebio.com?subject=[Oauth token request]) to get your Oauth token.
