@@ -1,0 +1,30 @@
+{
+  "name": "solvebio",
+  "version": "1.0.0",
+  "homepage": "https://github.com/solvebio/solvebio-js",
+  "authors": [
+    "Jeremie Cohen <jeremie@solvebio.com>"
+  ],
+  "description": "SolveBio Javascript client",
+  "main": "dist/solvebio.js",
+  "keywords": [
+    "solvebio",
+    "genomics",
+    "variants",
+    "data"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "coverage",
+    "dev_dist",
+    "out",
+    "src",
+    "Gruntfile.js",
+    "karma.conf.js"
+  ]
+}
