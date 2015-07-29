@@ -5,6 +5,7 @@
  */
 'use strict';
 
+var _ = require('../utils/underscore');
 var ResourceManager = require('./resource-manager');
 var Filter = require('../helpers/filter');
 
@@ -45,15 +46,23 @@ DatasetManager.prototype = Object.create(ResourceManager.prototype);
  */
 DatasetManager.prototype.query = function(options) {
   if(this._id) {
-    options = options || {};
+    var defaultOptions = {
+      limit: 100,
+      offset: 0
+    };
+
+    options = _.defaults(options || {}, defaultOptions);
+
     if(options.filters instanceof Filter) {
       options.filters = [options.filters.filters];
     }
+
     return this._solveBio.post(this._path + '/' + this._id + '/data', {
       limit: options.limit,
       offset: options.offset,
       genome_build: options.genome_build,
-      filters: options.filters || undefined,
+      query: options.query,
+      filters: options.filters,
       fields: options.fields
     });
   }

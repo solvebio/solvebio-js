@@ -3,7 +3,8 @@
 var _ = {};
 
 var nativeKeys     = Object.keys,
-  slice            = Array.prototype.slice;
+  slice            = Array.prototype.slice,
+  hasOwnProperty   = Object.prototype.hasOwnProperty;
 
 // An internal function for creating assigner functions.
 var createAssigner = function(keysFunc, undefinedOnly) {
@@ -23,8 +24,43 @@ var createAssigner = function(keysFunc, undefinedOnly) {
   };
 };
 
+
+// Object functions
+var hasEnumBug = !{toString: null}.propertyIsEnumerable('toString');
+var nonEnumerableProps = ['valueOf', 'isPrototypeOf', 'toString',
+  'propertyIsEnumerable', 'hasOwnProperty', 'toLocaleString'];
+
+function collectNonEnumProps(obj, keys) {
+  var nonEnumIdx = nonEnumerableProps.length;
+  var constructor = obj.constructor;
+  var proto = (_.isFunction(constructor) && constructor.prototype) || Object.prototype;
+
+  var prop = 'constructor';
+  if (_.has(obj, prop) && !_.contains(keys, prop)) keys.push(prop);
+
+  while (nonEnumIdx--) {
+    prop = nonEnumerableProps[nonEnumIdx];
+    if (prop in obj && obj[prop] !== proto[prop] && !_.contains(keys, prop)) {
+      keys.push(prop);
+    }
+  }
+}
+
+_.has = function(obj, key) {
+  return obj != null && hasOwnProperty.call(obj, key);
+};
+
 _.keys = function(obj) {
   return nativeKeys(obj);
+};
+
+_.allKeys = function(obj) {
+  if (!_.isObject(obj)) return [];
+  var keys = [];
+  for (var key in obj) keys.push(key);
+
+  if (hasEnumBug) collectNonEnumProps(obj, keys);
+  return keys;
 };
 
 var property = function(key) {
@@ -38,6 +74,8 @@ _.property = property;
 // Assigns a given object with all the own properties in the passed-in object(s)
 // (https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
 _.extendOwn = _.assign = createAssigner(_.keys);
+
+_.defaults = createAssigner(_.allKeys, true);
 
 
 // Is a given variable an object?
