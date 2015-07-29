@@ -60,6 +60,29 @@ describe('Tests fitlers', function() {
     });
   });
 
+  it('should support nested filters', function() {
+    var filter1 = SolveBio.Filter({
+      gene_symbol: 'BRCA1'
+    });
+    var filter2 = SolveBio.Filter({
+      gene_symbol: 'BRCA2'
+    });
+    var filter3 = SolveBio.Filter({
+      clinical_significance: 'Pathogenic'
+    });
+    expect(filter1.or(filter2.and(filter3)).filters).toEqual({
+      or: [
+        ['gene_symbol', 'BRCA1'],
+        {
+          and: [
+            ['gene_symbol', 'BRCA2'],
+            ['clinical_significance', 'Pathogenic']
+          ]
+        }
+      ]
+    });
+  });
+
   it('should inverse a filter', function() {
     var filter = SolveBio.Filter({
       gene_symbol: 'BRCA1'
