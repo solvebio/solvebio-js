@@ -50,13 +50,10 @@ DatasetManager.prototype.query = function(options) {
       limit: 100,
       offset: 0
     };
-
     options = _.defaults(options || {}, defaultOptions);
-
     if(options.filters instanceof Filter) {
       options.filters = [options.filters.filters];
     }
-
     return this._solveBio.post(this._path + '/' + this._id + '/data', {
       limit: options.limit,
       offset: options.offset,
