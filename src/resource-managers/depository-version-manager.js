@@ -42,7 +42,7 @@ DepositoryVersionManager.prototype.datasets = function() {
     return this._solveBio.get(this._path + '/' + this._id + '/datasets', {});
   }
   else {
-    console.error('You need to specify an id.');
+    console.error('You need to specify a version id.');
   }
 };
 
@@ -57,7 +57,7 @@ DepositoryVersionManager.prototype.changelog = function() {
     return this._solveBio.get(this._path + '/' + this._id + '/changelog', {});
   }
   else {
-    console.error('You need to specify an id.');
+    console.error('You need to specify a version id.');
   }
 };
 

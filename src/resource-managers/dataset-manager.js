@@ -58,7 +58,7 @@ DatasetManager.prototype.query = function(options) {
     });
   }
   else {
-    console.error('You need to specify a full name.');
+    console.error('You need to specify a dataset id or full name.');
   }
 };
 
@@ -71,7 +71,7 @@ DatasetManager.prototype.fields = function() {
     return this._solveBio.get(this._path + '/' + this._id + '/fields', {});
   }
   else {
-    console.error('You need to specify a full name.');
+    console.error('You need to specify a dataset id or full name.');
   }
 };
 
@@ -88,7 +88,7 @@ DatasetManager.prototype.filter = function(filter) {
     });
   }
   else {
-    console.error('You need to specify a full name.');
+    console.error('You need to specify a dataset id or full name.');
   }
 };
 

@@ -39,7 +39,7 @@ DepositoryManager.prototype.versions = function() {
     return this._solveBio.get(this._path + '/' + this._id + '/versions', {});
   }
   else {
-    console.error('You need to specify an id.');
+    console.error('You need to specify a depository id.');
   }
 };
 
