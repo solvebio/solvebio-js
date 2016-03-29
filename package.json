@@ -1,6 +1,5 @@
 {
   "name": "solvebio",
-  "author": "SolveBio",
   "version": "1.1.0",
   "description": "SolveBio Javascript client",
   "main": "./src/solvebio.js",
@@ -18,7 +17,6 @@
     "email": "jeremie@solvebio.com",
     "url": "https://github.com/jercoh"
   },
-  "license" : "SEE LICENSE IN LICENSE.md",
   "files": [
     "dist",
     "src"
