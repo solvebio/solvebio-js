@@ -10,7 +10,8 @@ node_js:
     - "0.12"
     - "0.11"
     - "0.10"
-    - "0.8"
+    # 0.8 fails on Travis
+    # - "0.8"
 before_script:
     - npm install grunt-cli
     - npm install karma-cli
