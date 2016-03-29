@@ -1,4 +1,7 @@
+[![Build Status](https://travis-ci.org/solvebio/solvebio-js.svg?branch=master)](http://travis-ci.org/solvebio/solvebio-js)
+
 # solvebio-js
+
 SolveBio Javascript SDK
 
 ## Features
