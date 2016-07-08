@@ -20,8 +20,8 @@ module.exports = function() {
       JSON.stringify({ //body
         url: request.requestURL,
         links: {
-          next: request.requestURL + 'page=3',
-          prev: request.requestURL + 'page=2'
+          next: request.requestURL + 'page=13',
+          prev: request.requestURL + 'page=11'
         }
       })
     );
