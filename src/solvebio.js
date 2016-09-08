@@ -188,7 +188,7 @@ SolveBio.prototype.$http = function(path){
               if(response.links) {
                 if(response.links.next) {
                   response.next = function() {
-                    var nextPage = response.links.next.match(/^.*page=(\d)$/)[1];
+                    var nextPage = response.links.next.match(/^.*page=(\d+)$/)[1];
                     var newData = _.assign(JSON.parse(data) || {}, {page: nextPage});
                     return core.ajax(method, path, newData, args);
                   };
@@ -196,7 +196,7 @@ SolveBio.prototype.$http = function(path){
 
                 if(response.links.prev) {
                   response.prev = function() {
-                    var prevPage = response.links.prev.match(/^.*page=(\d)$/)[1];
+                    var prevPage = response.links.prev.match(/^.*page=(\d+)$/)[1];
                     var newData = _.assign(JSON.parse(data) || {}, {page: prevPage});
                     return core.ajax(method, path, newData, args);
                   };
