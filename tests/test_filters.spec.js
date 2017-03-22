@@ -2,7 +2,7 @@
 
 var SolveBio = require('../src/solvebio');
 
-describe('Tests fitlers', function() {
+describe('Tests filters', function() {
   beforeEach(function() {
     SolveBio.init({
       debug: true,

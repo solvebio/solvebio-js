@@ -30,6 +30,7 @@
  * @see module:resource-managers/depository-version-manager
  * @see module:resource-managers/dataset-manager
  * @see module:resource-managers/dataset-field-manager
+ * @see module:resource-managers/expression-manager
  * @see module:helpers/filter
  */
 'use strict';
@@ -48,7 +49,8 @@ var DepositoryManager = require('./resource-managers/depository-manager'),
   DepositoryVersionManager = require('./resource-managers/depository-version-manager'),
   DatasetManager = require('./resource-managers/dataset-manager'),
   DatasetFieldManager = require('./resource-managers/dataset-field-manager'),
-  Filter = require('./helpers/filter');
+  Filter = require('./helpers/filter'),
+  ExpressionManager = require('./resource-managers/expression-manager');
 
 /**
  * SolveBio Global Object
@@ -110,6 +112,16 @@ var SolveBio = function() {
    */
   this.Filter = function(filters) {
     return new Filter(filters);
+  };
+
+  /**
+   * @param {String} expression A SolveBio expression formula.
+   * @param {String} dataType The expression output data type.
+   * @param {Bool} isList True if the expression returns a list.
+   * @returns {Expression} Instance of Expression.
+   */
+  this.Expression = function(expression, dataType, isList) {
+    return new ExpressionManager(this, expression, dataType, isList);
   };
 
   return this;

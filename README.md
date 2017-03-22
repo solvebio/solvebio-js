@@ -104,6 +104,12 @@ loadAll(SolveBio.Dataset().all())
  });
 ```
 
+## Example
+
+An HTML example is provided at `examples/simple.html`. You can try
+it by cloning the repository and opening the file in your browser.
+
+
 ## Developing
 
 ### Building from sources
