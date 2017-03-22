@@ -40,12 +40,11 @@ ExpressionManager.prototype = Object.create(ResourceManager.prototype);
  * @returns {Promise} Expression API response.
  */
 ExpressionManager.prototype.evaluate = function(data) {
-  console.log(this._solveBio);
   return this._solveBio.post(this._path, {
     expression: this.expression,
     data_type: this.dataType,
     is_list: this.isList,
-    data: data
+    data: data || {}
   });
 };
 
