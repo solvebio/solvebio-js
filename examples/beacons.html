@@ -1,0 +1,102 @@
+<html>
+    <title>SolveBio.js Example</title>
+    <script src="../dist/solvebio.js"></script>
+    <script src="../dist/solvebio-promises.js"></script>
+    <!-- <script src='https://raw.githubusercontent.com/solvebio/solvebio-js/master/dist/solvebio.js'></script> -->
+    <!-- <script src='https://raw.githubusercontent.com/solvebio/solvebio-js/master/dist/solvebio-promises.js'></script> -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <body>
+        <h3>Beacon Datasets for Gene + AA Variant</h3>
+        <p>Beacon public datasets for a mutation, given gene + AA (or other) variant.</p>
+        <form id="form-beacons">
+            <label for="query">Variant</label>
+            <input name="query" type="text" value="BRAF V600E">
+            <input type="submit" value="Beacon">
+
+            <pre id="form-beacons-variants"></pre>
+            <pre id="form-beacons-output"></pre>
+        </form>
+
+        <script>
+            SolveBio.init({
+                  accessToken: 'ACCESS TOKEN'
+            });
+
+            // Beacon datasets given form input
+            $("#form-beacons").submit(function(event) {
+                $("#form-beacons-variants").text("Loading...");
+                $("#form-beacons-output").text("");
+                var query = $("#form-beacons input[name=query]").val();
+
+                normalizeVariant(query)
+                    .then(function(response) {
+                        if (response.result.length > 0) {
+                            $("#form-beacons-variants")
+                                .text("Found the following variant(s): \n" + response.result.join("\n"));
+
+                            // Beacon the returned variants (first one)
+                            // NOTE: There may be other genomic variants...
+                            $("#form-beacons-output").text("Loading beacons...");
+                            var variant = response.result[0];
+                            beaconVariant(variant)
+                                .then(function(response) {
+                                    var datasets = response.result.found;
+                                    if (datasets.length > 0) {
+                                        $("#form-beacons-output")
+                                            .text("Found " + datasets.length + " beacons...\n");
+                                        
+                                        datasets.forEach(function(d) {
+                                            $("#form-beacons-output").append("Dataset " + d + " results:\n");
+                                            queryVariant(variant, d)
+                                                .then(function(response) {
+                                                    $("#form-beacons-output").append(JSON.stringify(response) + "\n");
+                                                });
+                                        });
+                                    }
+                                    else {
+                                        $("#form-beacons-output")
+                                            .text("No beacons matched the variant.");
+                                    }
+                                });
+                        }
+                        else {
+                            $("#form-beacons-variants")
+                                .text("Input could not be translated into a SolveBio variant.");
+                        }
+                    })
+                    .catch(function(response) {
+                        $("#form-output").text("Error: " + response.detail);
+                    });
+
+                event.preventDefault();
+            });
+
+            var defaultDatasets = [
+                "ClinVar/3.7.4-2017-01-30/Variants",
+                "ICGC/3.0.0-23/SimpleSomaticMutation",
+                "CIViC/2.0.1-2016-12-28/Variants",
+                "dbSNP/1.0.1-b147/Variants",
+                "CancerHotspots/1.0.0-2016-08-08/Variants",
+                "ExAC/1.3.0-r0.3/ExAC",
+                "COSMIC/1.1.0-COSMIC71/SomaticMutationsCoding"
+            ];
+
+            var normalizeVariant = function(query) {
+                var expr = SolveBio.Expression('[e for e in entity_ids("variant", query) if e]', 'string', true);
+                return expr.evaluate({query: query});
+            };
+
+            var beaconVariant = function(variant, datasets) {
+                var expr = SolveBio.Expression('beacon(variant, "variant", datasets=datasets, visibility="public")', 'object', false);
+                return expr.evaluate({variant: variant, datasets: datasets || defaultDatasets});
+            };
+
+            var queryVariant = function(variant, dataset) {
+                // Only 1 dataset can be queried at a time
+                var expr = SolveBio.Expression('dataset_query(dataset, entities=[["variant", variant]])', 'object', true);
+                return expr.evaluate({variant: variant, dataset: dataset});
+            };
+        </script>
+    </body>
+</html>
