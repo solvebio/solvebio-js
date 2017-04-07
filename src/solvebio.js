@@ -148,6 +148,7 @@ var serialize = function(obj) {
  */
 SolveBio.prototype.init = function(userConfig) {
   this._config._accessToken = userConfig.accessToken;
+  this._config.apiHost = userConfig.apiHost || this._config.apiHost;
   config.DEBUG = !!userConfig.debug;
 };
 

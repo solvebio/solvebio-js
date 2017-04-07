@@ -23,7 +23,9 @@
 
         <script>
             SolveBio.init({
-                accessToken: 'ACCESS TOKEN'
+                apiHost: 'https://api-stag.solvebio.com',
+                accessToken: 'dcaplan_sod9ckgjl8nyx764jlszll'
+                // accessToken: 'ACCESS TOKEN'
             });
 
             // Beacon datasets given form input
@@ -35,36 +37,31 @@
 
                 SolveBio.Expression('entity_ids("variant", query)', 'string', true)
                     .evaluate({query: query})
-                    .catch(function(response) {
-                        output.text("Error: " + response.detail);
-                    })
                     .then(function(response) {
                         // NOTE: There may be multiple entity IDs returned for a variant.
-                        var variant = response.result[0];
-                        if (!variant) {
+                        if (!response.result[0]) {
                             output.text("Variant could not be normalized");
                             return;
                         }
 
-                        output.append("Normalized variant IDs: \n");
-                        output.append(response.result.join("\n"));
-                        output.append("\n\n");
+                        output.append("Normalized variant IDs: \n" + response.result.join("\n") + "\n\n");
+                        output.append("Beacon results: \n");
 
-                        SolveBio.Expression('beacon(variant, "variant", visibility=visibility)', 'object', false)
-                            .evaluate({variant: variant, visibility: visibility})
-                            .catch(function(response) {
-                                window.alert("Beacon error: " + response.detail);
-                            })
-                            .then(function(response) {
-                                var datasets = response.result.found;
-                                if (datasets.length > 0) {
-                                    output.append("Found " + datasets.length + " beacons:\n");
-                                    output.append(datasets.join("\n"));
-                                }
-                                else {
-                                    output.append("No beacons matched the variant.");
-                                }
-                            });
+                        response.result.map(function(variant) {
+                            SolveBio.Expression('beacon(variant, "variant", visibility=visibility)', 'object', false)
+                                .evaluate({variant: variant, visibility: visibility})
+                                .then(function(response) {
+                                    var datasets = response.result.found;
+                                    if (datasets.length === 0) {
+                                        output.append("No beacons matched: " + variant + "\n");
+                                    }
+                                    else {
+                                        datasets.map(function(d) {
+                                            output.append(variant + " -> " + d + "\n");
+                                        });
+                                    }
+                                });
+                        });
                     });
 
                 event.preventDefault();
