@@ -1,0 +1,24 @@
+<html>
+    <title>SolveBio.js Beacons Example</title>
+    <head>
+        <script src="../../dist/solvebio.js"></script>
+        <script src="../../dist/solvebio-promises.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.js"></script>
+    </head>
+    <body>
+        <h3>Beacon Datasets for Gene + AA Variant</h3>
+        <p>Beacon public or private datasets for a mutation, given gene + AA (or other) variant.</p>
+        <form id="form-beacons">
+            <label for="query">Variant</label>
+            <input type="text" name="query" value="BRAF V600E">
+            <select name="visibility">
+                <option value="public">Public Datasets</option>
+                <option value="private">Private Datasets</option>
+            </select>
+            <button type="submit">Beacon</button>
+            <p id="form-beacons-output"></p>
+        </form>
+        <script src="beacons.js"></script>
+    </body>
+</html>
