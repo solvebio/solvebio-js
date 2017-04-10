@@ -26,8 +26,10 @@ $("#form-query").submit(function(event) {
       output.append(response.result.join("\n"));
       output.append("\n\n");
 
-      SolveBio.Expression('dataset_query(dataset, entities=[["variant", variant]])', 'object', true)
-        .evaluate({variant: variant, dataset: dataset})
+      SolveBio.Expression('dataset_query(dataset, entities=[["variant", variant]], fields=fields)', 'object', true)
+        // Optionally restrict output to a set of fields by passing a list of
+        // field names to the "fields" parameter.
+        .evaluate({variant: variant, dataset: dataset, fields: null})
         .catch(function(response) {
           window.alert("Query error: " + response.detail);
         })
