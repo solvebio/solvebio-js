@@ -1,0 +1,28 @@
+<html>
+    <title>SolveBio.js Example</title>
+    <head>
+        <script src="../../dist/solvebio.js"></script>
+        <script src="../../dist/solvebio-promises.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <h3>Query a dataset for Gene + AA Variant</h3>
+        <p>Query public datasets for a mutation, given gene + AA (or other) variant.</p>
+        <form id="form-query">
+            <label for="query">Variant</label>
+            <input type="text" name="query" value="BRAF V600E">
+            <select name="dataset">
+                <option value="ClinVar/Variants">ClinVar</option>
+                <option value="ICGC/SimpleSomaticMutation">ICGC</option>
+                <option value="CIViC/Variants">CIViC</option>
+                <option value="dbSNP/Variants">dbSNP</option>
+                <option value="CancerHotspots/Variants">CancerHotspots</option>
+                <option value="ExAC/ExAC">ExAC</option>
+                <option value="COSMIC/SomaticMutationsCoding">COSMIC</option>
+            </select>
+            <button type="submit">Query</button>
+            <pre id="form-query-output"></pre>
+        </form>
+        <script src="queries.js"></script>
+    </body>
+</html>

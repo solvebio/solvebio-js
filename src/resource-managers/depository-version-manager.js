@@ -23,7 +23,7 @@ var ResourceManager = require('./resource-manager');
  */
 
 var DepositoryVersionManager = function(solveBio, id) {
-  var path = 'depository_versions';
+  var path = '/v1/depository_versions';
 
   // Call the parent constructor, making sure (using Function#call)
   // that "this" is set correctly during the call

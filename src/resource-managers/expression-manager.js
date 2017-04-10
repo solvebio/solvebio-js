@@ -20,7 +20,7 @@ var ResourceManager = require('./resource-manager');
  */
 
 var ExpressionManager = function(solveBio, expression, dataType, isList) {
-  var path = 'evaluate';
+  var path = '/v1/evaluate';
 
   // Call the parent constructor, making sure (using Function#call)
   // that "this" is set correctly during the call

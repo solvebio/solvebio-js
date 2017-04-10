@@ -20,7 +20,7 @@ var ResourceManager = require('./resource-manager');
  */
 
 var DatasetFieldManager = function(solveBio, id) {
-  var path = 'dataset_fields';
+  var path = '/v1/dataset_fields';
 
   // Call the parent constructor, making sure (using Function#call)
   // that "this" is set correctly during the call
