@@ -9,8 +9,15 @@ $("#form-query").submit(function(event) {
   var output = $("#form-query-output");
   $("#form-query-output").text("");
 
+  // Query can be any of the following:
+  // * SBID (GRCH37-17-41244429-41244429-T)
+  // * VCF style (chr7-117199644-ATCT-A)
+  // * Gene AA (BRAF V600E)
+  // * HGVS g/c/p (NC_000017.10:g.41244429C>T)
   SolveBio.Expression('entity_ids("variant", query)', 'string', true)
-    .evaluate({query: query})
+    .evaluate({
+      query: query
+    })
     .catch(function(response) {
       output.text("Error: " + response.detail);
     })
@@ -27,9 +34,13 @@ $("#form-query").submit(function(event) {
       output.append("\n\n");
 
       SolveBio.Expression('dataset_query(dataset, entities=[["variant", variant]], fields=fields)', 'object', true)
-        // Optionally restrict output to a set of fields by passing a list of
-        // field names to the "fields" parameter.
-        .evaluate({variant: variant, dataset: dataset, fields: null})
+        .evaluate({
+          variant: variant,
+          dataset: dataset,
+          // Optionally restrict output to a set of fields by passing a list of
+          // field names to the "fields" parameter.
+          fields: null
+        })
         .catch(function(response) {
           window.alert("Query error: " + response.detail);
         })

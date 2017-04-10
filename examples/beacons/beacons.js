@@ -13,6 +13,11 @@ form.submit(function(event) {
 
   // Pass the query through the entity_ids() function which
   // will find one or more variant IDs equivalent to the query.
+  // Query can be any of the following:
+  // * SBID (GRCH37-17-41244429-41244429-T)
+  // * VCF style (chr7-117199644-ATCT-A)
+  // * Gene AA (BRAF V600E)
+  // * HGVS g/c/p (NC_000017.10:g.41244429C>T)
   SolveBio.Expression('entity_ids("variant", query)', 'string', true)
     .evaluate({
       query: query
@@ -32,6 +37,8 @@ form.submit(function(event) {
 
       // Runs a beacon query for a single variant against all
       // available public or private datasets.
+      // The variant must be a valid SolveBio ID (SBID)
+      // Visibility can be "public" or "private"
       return SolveBio.Expression('beacon(variant, "variant", visibility=visibility)', 'object', false)
         .evaluate({
           variant: variant,
