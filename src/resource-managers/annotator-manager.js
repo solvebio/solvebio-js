@@ -20,7 +20,7 @@ var BaseManager = require('./base-manager');
  * @requires module:resource-managers/resource-manager
  */
 
-var AnnotatorManager = function(solveBio, fields, include_errors) {
+var AnnotatorManager = function(solveBio, fields, includeErrors) {
   var path = '/v1/annotate';
 
   // Call the parent constructor, making sure (using Function#call)
@@ -28,7 +28,7 @@ var AnnotatorManager = function(solveBio, fields, include_errors) {
   BaseManager.call(this, solveBio, path);
 
   this.fields = fields;
-  this.include_errors = !!include_errors;
+  this.includeErrors = !!includeErrors;
 };
 
 AnnotatorManager.prototype = Object.create(BaseManager.prototype);
@@ -42,7 +42,7 @@ AnnotatorManager.prototype = Object.create(BaseManager.prototype);
 AnnotatorManager.prototype.annotate = function(records) {
   return this._solveBio.post(this._path, {
     fields: this.fields,
-    include_errors: this.include_errors,
+    include_errors: this.includeErrors,
     records: records
   });
 };

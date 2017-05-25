@@ -130,8 +130,8 @@ var SolveBio = function() {
    * @param {Object} fields A list of field objects (dataset fields).
    * @returns {Annotator} Instance of Annotator.
    */
-  this.Annotator = function(fields) {
-    return new AnnotatorManager(this, fields);
+  this.Annotator = function(fields, includeErrors) {
+    return new AnnotatorManager(this, fields, includeErrors);
   };
 
   return this;
