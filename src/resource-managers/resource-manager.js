@@ -5,6 +5,7 @@
 'use strict';
 
 var console = require('../utils/console');
+var BaseManager = require('./base-manager');
 
 /**
  * Resource Manager Object
@@ -12,17 +13,16 @@ var console = require('../utils/console');
  * Class representing an API resource manager.
  *
  * @constructor
+ * @augments BaseManager
  */
 
 var ResourceManager = function(solveBio, path, id) {
   /** @private */
-  this._solveBio = solveBio;
-
-  /** @private */
-  this._path = path;
-
-  /** @private */
   this._id = id;
+
+  // Call the parent constructor, making sure (using Function#call)
+  // that "this" is set correctly during the call
+  BaseManager.call(this, solveBio, path);
 };
 
 /**
