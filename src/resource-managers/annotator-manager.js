@@ -5,7 +5,7 @@
  */
 'use strict';
 
-var ResourceManager = require('./resource-manager');
+var BaseManager = require('./base-manager');
 
 /**
  * Annotator Manager Object
@@ -16,7 +16,7 @@ var ResourceManager = require('./resource-manager');
  * which can be linked within records with an Annotator.
  *
  * @constructor
- * @augments ResourceManager
+ * @augments BaseManager
  * @requires module:resource-managers/resource-manager
  */
 
@@ -25,13 +25,13 @@ var AnnotatorManager = function(solveBio, fields, include_errors) {
 
   // Call the parent constructor, making sure (using Function#call)
   // that "this" is set correctly during the call
-  ResourceManager.call(this, solveBio, path, null);
+  BaseManager.call(this, solveBio, path);
 
   this.fields = fields;
   this.include_errors = !!include_errors;
 };
 
-AnnotatorManager.prototype = Object.create(ResourceManager.prototype);
+AnnotatorManager.prototype = Object.create(BaseManager.prototype);
 
 /**
  * Annotate a list of records.
