@@ -11,7 +11,7 @@ describe('Tests Annotator', function() {
                     'name': 'variant_normalized',
                     'data_type': 'string',
                     'is_list': false,
-                    'expression': "entity_ids('variant', record.variant)"
+                    'expression': 'entity_ids(\'variant\', record.variant)'
                 }
             ],
             records = [
@@ -25,8 +25,7 @@ describe('Tests Annotator', function() {
                 accessToken: accessToken
             });
 
-            annotation = SolveBio.Annotator(fields);
-            annotation.annotate(records)
+            annotation = SolveBio.Annotator(fields).annotate(records)
                 .then(function(data){
                     done();
                     return data;
@@ -34,11 +33,10 @@ describe('Tests Annotator', function() {
         });
 
         it('Annotation URL should be /annotate', function(done) {
-            annotation.evaluate()
-                .then(function(data) {
-                    expect(data.url).toEqual('https://api.solvebio.com/v1/annotate');
-                    done();
-                });
+            annotation.then(function(data) {
+                expect(data.url).toEqual('https://api.solvebio.com/v1/annotate');
+                done();
+            });
         });
     });
 });

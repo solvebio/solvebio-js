@@ -128,6 +128,7 @@ var SolveBio = function() {
 
   /**
    * @param {Object} fields A list of field objects (dataset fields).
+   * @param {Bool} includeErrors True to include error messages in the response.
    * @returns {Annotator} Instance of Annotator.
    */
   this.Annotator = function(fields, includeErrors) {
