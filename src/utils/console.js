@@ -1,3 +1,7 @@
+/**
+ * Console module.
+ * @module utils/console
+ */
 'use strict';
 
 var _ = require('./underscore');

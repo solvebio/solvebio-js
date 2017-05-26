@@ -1,6 +1,7 @@
 /**
  * Resource Manager module.
  * @module resource-managers/resource-manager
+ * @see module:resource-managers/base-manager
  */
 'use strict';
 
@@ -14,6 +15,8 @@ var BaseManager = require('./base-manager');
  *
  * @constructor
  * @augments BaseManager
+ * @requires module:resource-managers/base-manager
+ * @requires module:utils/console
  */
 
 var ResourceManager = function(solveBio, path, id) {

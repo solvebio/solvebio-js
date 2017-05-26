@@ -1,7 +1,7 @@
 /**
  * Expression Manager module.
  * @module resource-managers/expression-manager
- * @see module:resource-managers/resource-manager
+ * @see module:resource-managers/base-manager
  */
 'use strict';
 
@@ -16,7 +16,7 @@ var BaseManager = require('./base-manager');
  *
  * @constructor
  * @augments BaseManager
- * @requires module:resource-managers/resource-manager
+ * @requires module:resource-managers/base-manager
  */
 
 var ExpressionManager = function(solveBio, expression, dataType, isList) {
