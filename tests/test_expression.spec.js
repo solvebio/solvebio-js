@@ -13,20 +13,19 @@ describe('Tests Expression', function() {
         accessToken: accessToken
       });
 
-      expression = SolveBio.Expression('1+1', 'integer');
-      expression.evaluate()
-        .then(function(data){
-          done();
-          return data;
-        });
+      expression = SolveBio.Expression('1+1', 'integer')
+          .evaluate()
+          .then(function(data){
+            done();
+            return data;
+          });
     });
 
     it('Expression URL should be /evaluate', function(done) {
-      expression.evaluate()
-        .then(function(data) {
-          expect(data.url).toEqual('https://api.solvebio.com/v1/evaluate');
-          done();
-        });
+      expression.then(function(data) {
+        expect(data.url).toEqual('https://api.solvebio.com/v1/evaluate');
+        done();
+      });
     });
   });
 });

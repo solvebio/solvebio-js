@@ -1,11 +1,11 @@
 /**
  * Expression Manager module.
  * @module resource-managers/expression-manager
- * @see module:resource-managers/resource-manager
+ * @see module:resource-managers/base-manager
  */
 'use strict';
 
-var ResourceManager = require('./resource-manager');
+var BaseManager = require('./base-manager');
 
 /**
  * Expression Manager Object
@@ -15,8 +15,8 @@ var ResourceManager = require('./resource-manager');
  * single value or list of values with a specific data type.
  *
  * @constructor
- * @augments ResourceManager
- * @requires module:resource-managers/resource-manager
+ * @augments BaseManager
+ * @requires module:resource-managers/base-manager
  */
 
 var ExpressionManager = function(solveBio, expression, dataType, isList) {
@@ -24,14 +24,14 @@ var ExpressionManager = function(solveBio, expression, dataType, isList) {
 
   // Call the parent constructor, making sure (using Function#call)
   // that "this" is set correctly during the call
-  ResourceManager.call(this, solveBio, path, null);
+  BaseManager.call(this, solveBio, path);
 
   this.expression = expression;
   this.dataType = dataType;
   this.isList = isList;
 };
 
-ExpressionManager.prototype = Object.create(ResourceManager.prototype);
+ExpressionManager.prototype = Object.create(BaseManager.prototype);
 
 /**
  * Evaluate an expression.

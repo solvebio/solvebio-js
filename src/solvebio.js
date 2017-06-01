@@ -31,6 +31,7 @@
  * @see module:resource-managers/dataset-manager
  * @see module:resource-managers/dataset-field-manager
  * @see module:resource-managers/expression-manager
+ * @see module:resource-managers/annotator-manager
  * @see module:helpers/filter
  */
 'use strict';
@@ -50,7 +51,8 @@ var DepositoryManager = require('./resource-managers/depository-manager'),
   DatasetManager = require('./resource-managers/dataset-manager'),
   DatasetFieldManager = require('./resource-managers/dataset-field-manager'),
   Filter = require('./helpers/filter'),
-  ExpressionManager = require('./resource-managers/expression-manager');
+  ExpressionManager = require('./resource-managers/expression-manager'),
+  AnnotatorManager = require('./resource-managers/annotator-manager');
 
 /**
  * SolveBio Global Object
@@ -122,6 +124,15 @@ var SolveBio = function() {
    */
   this.Expression = function(expression, dataType, isList) {
     return new ExpressionManager(this, expression, dataType, isList);
+  };
+
+  /**
+   * @param {Object} fields A list of field objects (dataset fields).
+   * @param {Bool} includeErrors True to include error messages in the response.
+   * @returns {Annotator} Instance of Annotator.
+   */
+  this.Annotator = function(fields, includeErrors) {
+    return new AnnotatorManager(this, fields, includeErrors);
   };
 
   return this;

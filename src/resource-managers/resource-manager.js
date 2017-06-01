@@ -1,10 +1,12 @@
 /**
  * Resource Manager module.
  * @module resource-managers/resource-manager
+ * @see module:resource-managers/base-manager
  */
 'use strict';
 
 var console = require('../utils/console');
+var BaseManager = require('./base-manager');
 
 /**
  * Resource Manager Object
@@ -12,17 +14,18 @@ var console = require('../utils/console');
  * Class representing an API resource manager.
  *
  * @constructor
+ * @augments BaseManager
+ * @requires module:resource-managers/base-manager
+ * @requires module:utils/console
  */
 
 var ResourceManager = function(solveBio, path, id) {
   /** @private */
-  this._solveBio = solveBio;
-
-  /** @private */
-  this._path = path;
-
-  /** @private */
   this._id = id;
+
+  // Call the parent constructor, making sure (using Function#call)
+  // that "this" is set correctly during the call
+  BaseManager.call(this, solveBio, path);
 };
 
 /**
